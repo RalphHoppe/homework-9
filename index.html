@@ -431,7 +431,7 @@
     };
 
     // ── Remember the account between the steps of the flow ───────────────────
-    //    sign in → enter password ⇄ get a code to sign in
+    //    sign in → get a code to sign in ⇄ enter your password
     var EMAIL_KEY = 'msft-demo-email';
 
     function savedEmail() {
@@ -441,7 +441,7 @@
     function nextStep(value) {
       var email = encodeURIComponent(value.trim());
       try { window.localStorage.setItem(EMAIL_KEY, value.trim()); } catch (e) {}
-      window.location.href = 'enter-password.html?email=' + email;
+      window.location.href = 'get-a-code.html?email=' + email;
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -504,7 +504,7 @@
         return;
       }
 
-      // 3. Valid → carry the account over to the password step
+      // 3. Valid → carry the account over to the next step (get a code)
       nextStep(value);
     });
 

@@ -193,8 +193,8 @@ body {
 
 .title {
   margin: 0 0 12px;
-  font-size: 1.25rem;        /* 20px */
-  line-height: 1.75rem;      /* 28px */
+  font-size: 1.5rem;         /* 24px — matches the reference (ink 24px tall) */
+  line-height: 2rem;         /* 32px */
   font-weight: 600;
   text-align: center;
   color: var(--colorNeutralForeground1);
@@ -209,8 +209,8 @@ body {
 
 /* ── Text field (Fluent outlined input with a floating label) ────────────── */
 
-/* the field sits 32px below the heading (12px heading margin + 20px here) */
-.field { margin: 20px 0 0; }
+/* 12px heading margin + 32px here = the 33px gap measured in the reference */
+.field { margin: 32px 0 0; }
 
 .input-shell {
   position: relative;
@@ -358,6 +358,9 @@ body {
   text-align: center;
 }
 
+/* "Send a code to …" / "Use your password" render semibold on the real page */
+.view-footer .link { font-weight: 600; }
+
 /* ── Links ──────────────────────────────────────────────────────────────── */
 
 .link {
@@ -376,15 +379,16 @@ body {
 .link:focus-visible { outline: 2px solid #000; outline-offset: 1px; }
 
 /* ── Footer (Help and feedback · Terms of use · Privacy and cookies) ─────── */
-/*    A full-width band pinned to the bottom of the viewport, white with
-      #424242 links, matching --footerBackgroundColor / --footerColor.       */
+/*    Pinned to the bottom of the viewport, as wide as the card and sitting
+      straight on the page background (no panel behind it), #424242 links.   */
 
 .footer {
   flex: 0 0 auto;
   width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
   min-height: 24px;
   padding: 12px 16px;
-  background-color: var(--colorNeutralBackground1);
   color: var(--colorNeutralForeground2);
   display: flex;
   flex-direction: column;
@@ -400,15 +404,22 @@ body {
   row-gap: 8px;
 }
 
-.footer-links .link { color: var(--colorNeutralForeground2); }
+.footer-links .link {
+  color: var(--colorNeutralForeground2);
+  font-size: 0.75rem;        /* 12px — the reference renders these at 12px */
+  line-height: 1rem;         /* 16px */
+}
 
 .footer-note {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   font-size: 0.625rem;       /* 10px, like the real page */
   line-height: 0.875rem;     /* 14px */
   color: inherit;
   text-align: center;
 }
+
+/* "Learn more" keeps the note's 10px size, but is semibold */
+.footer-note .link { font-size: inherit; font-weight: 600; }
 
 /* ── Demo status line (this is a mockup — nothing is really sent) ────────── */
 
