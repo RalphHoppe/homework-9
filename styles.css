@@ -84,12 +84,24 @@ body {
 
 /* ── Page layout ────────────────────────────────────────────────────────── */
 
+/* Full-viewport column: card is centred, footer is pinned to the bottom,
+   exactly like the real page (#outer > #middle + footer). */
 .outer {
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.middle {
+  flex: 1 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
   padding: 24px 12px;
 }
 
@@ -219,10 +231,13 @@ body {
 }
 .input-shell.has-error { border-color: var(--colorStatusDangerBorderActive); }
 
+/* Empty: the label acts as the placeholder, vertically centred and lined up
+   with where the typed text will appear (8px in from the edge). */
 .input-label {
   position: absolute;
-  left: 8px;
-  right: 8px;
+  left: 4px;
+  max-width: calc(100% - 8px);
+  padding: 0 4px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.875rem;
@@ -235,18 +250,22 @@ body {
   transition: font-size 0.1s ease-in-out, top 0.1s ease-in-out, transform 0.1s ease-in-out;
 }
 
-/* floated state: label rides up to the top of the box */
+/* Filled / focused: it shrinks to 10px and rides up onto the top border,
+   with a white background notching the border behind it — the Fluent
+   outlined-input look. The value itself stays centred in the field. */
 .input-shell.is-floating .input-label {
-  top: 3px;
-  transform: none;
+  top: 0;
+  transform: translateY(-50%);
   font-size: 0.625rem;       /* 10px */
   line-height: 0.875rem;     /* 14px */
+  background-color: var(--colorNeutralBackground1);
 }
 
+/* The typed value stays vertically centred in the field, like the real page. */
 .input-shell input {
   width: 100%;
-  height: 40px;
-  padding: 15px 0 1px;       /* leaves room for the floating label */
+  height: 38px;
+  padding: 0;
   border: 0;
   outline: none;
   background: transparent;
@@ -256,23 +275,28 @@ body {
   line-height: 1.25rem;
 }
 
-/* "Show" toggle inside the field — only rendered once something is typed */
+/* Eye toggle inside the field — only shown once something is typed */
 .show-button {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   margin-left: 4px;
-  padding: 0 4px;
+  padding: 0;
   border: 0;
+  border-radius: var(--borderRadiusMedium);
   background: transparent;
   color: var(--colorNeutralForeground3);
-  font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.25rem;
   cursor: pointer;
 }
-.show-button:hover { color: var(--colorNeutralForeground2); text-decoration: underline; }
+.show-button:hover { background-color: rgba(0, 0, 0, 0.06); color: var(--colorNeutralForeground2); }
+.show-button:active { background-color: rgba(0, 0, 0, 0.1); }
 .show-button:focus-visible { outline: 2px solid #000; outline-offset: 1px; }
-.show-button[hidden] { display: none; }
+.show-button svg { width: 20px; height: 20px; display: block; fill: currentColor; }
+.show-button[hidden],
+.show-button svg[hidden] { display: none; }
 
 /* ── Validation message ─────────────────────────────────────────────────── */
 
@@ -352,10 +376,19 @@ body {
 .link:focus-visible { outline: 2px solid #000; outline-offset: 1px; }
 
 /* ── Footer (Help and feedback · Terms of use · Privacy and cookies) ─────── */
+/*    A full-width band pinned to the bottom of the viewport, white with
+      #424242 links, matching --footerBackgroundColor / --footerColor.       */
 
 .footer {
-  margin-top: 24px;
-  text-align: center;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 24px;
+  padding: 12px 16px;
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .footer-links {
@@ -371,9 +404,10 @@ body {
 
 .footer-note {
   margin: 8px 0 0;
-  font-size: 0.75rem;        /* 12px */
-  line-height: 1rem;
-  color: var(--colorNeutralForeground3);
+  font-size: 0.625rem;       /* 10px, like the real page */
+  line-height: 0.875rem;     /* 14px */
+  color: inherit;
+  text-align: center;
 }
 
 /* ── Demo status line (this is a mockup — nothing is really sent) ────────── */
@@ -392,10 +426,7 @@ body {
   .background-image-holder,
   .background-image { display: none; }
 
-  .outer {
-    align-items: flex-start;
-    padding: 0;
-  }
+  .middle { padding: 0; }
 
   .card {
     padding: 24px;
@@ -403,6 +434,4 @@ body {
     box-shadow: none;
     min-width: 0;
   }
-
-  .footer { padding: 0 12px 24px; }
 }
