@@ -87,8 +87,9 @@
       form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // Continue to the code step, carrying the account along.
-        window.Flow.goTo(window.Flow.withEmail('enter-code.html'));
+        // Ask for the email first (verify step), then the code — carrying
+        // the account along.
+        window.Flow.goTo(window.Flow.withEmail('verify-email.html'));
       });
 
       document.getElementById('helpAndFeedback')
