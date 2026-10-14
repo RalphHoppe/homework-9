@@ -17,8 +17,9 @@
   var DEFAULT_EMAIL = 'test@test.com';
   var STEPS = [
     'index.html',
-    'verify-email.html',
+    'pick-account.html',
     'get-a-code.html',
+    'verify-email.html',
     'enter-code.html',
     'enter-password.html'
   ];
