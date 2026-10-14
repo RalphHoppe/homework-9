@@ -1,0 +1,408 @@
+/* ==========================================================================
+   Microsoft sign-in flow — shared styles for the account steps
+   (enter-password.html, get-a-code.html)
+
+   Colours / sizes / spacing are Fluent design tokens taken from the
+   reference captures in "mockup-downloaded -by-single-file/":
+     brand blue  #0f6cbd   text #242424   secondary text #424242 / #616161
+     stroke #d1d1d1        danger #bc2f32
+     card  440px wide, 40px padding, 12px radius, shadow28
+   ========================================================================== */
+
+:root {
+  /* Fluent tokens (light theme) */
+  --colorNeutralForeground1: #242424;
+  --colorNeutralForeground2: #424242;
+  --colorNeutralForeground3: #616161;
+  --colorNeutralForeground4: #707070;
+  --colorNeutralBackground1: #ffffff;
+  --colorNeutralStroke1: #d1d1d1;
+  --colorNeutralStroke1Hover: #c7c7c7;
+  --colorNeutralStroke2: #e0e0e0;
+  --colorNeutralStrokeAccessible: #616161;
+  --colorBrandBackground: #0f6cbd;
+  --colorBrandBackgroundHover: #115ea3;
+  --colorBrandBackgroundPressed: #0c3b5e;
+  --colorBrandForegroundLink: #115ea3;
+  --colorBrandForegroundLinkHover: #0f548c;
+  --colorBrandForegroundLinkPressed: #0c3b5e;
+  --colorBrandStroke1: #0f6cbd;
+  --colorStatusDangerBorderActive: #c50f1f;
+  --colorPaletteRedForeground1: #bc2f32;
+
+  --borderRadiusMedium: 4px;
+  --borderRadiusLarge: 6px;
+  --borderRadiusXLarge: 12px;
+  --borderRadiusCircular: 10000px;
+
+  --shadow4: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
+  --shadow28: 0 0 8px rgba(0, 0, 0, 0.12), 0 14px 28px rgba(0, 0, 0, 0.14);
+
+  --fontFamilyBase: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { height: 100%; font-size: 100%; }
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--fontFamilyBase);
+  font-size: 0.875rem;      /* 14px */
+  line-height: 1.25rem;     /* 20px */
+  font-weight: 400;
+  color: var(--colorNeutralForeground1);
+  background-color: #f2f2f2;
+  direction: ltr;
+}
+
+/* ── Background (same photo the sign-in page uses) ──────────────────────── */
+
+.background-image-holder,
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f2f2f2;
+}
+
+.background-image {
+  background-image: url('17d89d58199edf531c4496c9337b7d35b9c57375.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── Page layout ────────────────────────────────────────────────────────── */
+
+.outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 12px;
+}
+
+.stack {
+  width: 100%;
+  max-width: 440px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background-color: var(--colorNeutralBackground1);
+  border-radius: var(--borderRadiusXLarge);
+  box-shadow: var(--shadow28);
+  padding: 40px;
+}
+
+/* ── Banner row: [back / dismiss] [Microsoft logo] ───────────────────────── */
+
+.banner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.banner-start { justify-self: start; }
+.banner-end { justify-self: end; }
+
+.logo {
+  justify-self: center;
+  height: 24px;
+  width: auto;
+  display: block;
+}
+
+/* Square icon button (back arrow / dismiss), like Fluent's subtle button */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--borderRadiusMedium);
+  background-color: transparent;
+  color: var(--colorNeutralForeground3);
+  cursor: pointer;
+  font-family: inherit;
+}
+.icon-button:hover { background-color: rgba(0, 0, 0, 0.06); }
+.icon-button:active { background-color: rgba(0, 0, 0, 0.1); }
+.icon-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+.icon-button svg { width: 24px; height: 24px; fill: currentColor; display: block; }
+
+/* ── Identity badge (the account chip) ──────────────────────────────────── */
+
+.badge-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.identity-badge {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--colorNeutralStroke2);
+  border-radius: var(--borderRadiusCircular);
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground3);
+  font-size: 0.75rem;        /* 12px */
+  font-weight: 600;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Title + subtitle ───────────────────────────────────────────────────── */
+
+.title {
+  margin: 0 0 12px;
+  font-size: 1.25rem;        /* 20px */
+  line-height: 1.75rem;      /* 28px */
+  font-weight: 600;
+  text-align: center;
+  color: var(--colorNeutralForeground1);
+}
+
+.subtitle {
+  margin: 0;
+  text-align: center;
+  color: var(--colorNeutralForeground1);
+}
+.subtitle .email { font-weight: 600; }
+
+/* ── Text field (Fluent outlined input with a floating label) ────────────── */
+
+/* the field sits 32px below the heading (12px heading margin + 20px here) */
+.field { margin: 20px 0 0; }
+
+.input-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 8px;
+  background-color: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke1);
+  border-bottom-color: var(--colorNeutralStrokeAccessible);
+  border-radius: var(--borderRadiusMedium);
+  transition: border-color 0.1s ease-in-out;
+}
+.input-shell:hover { border-color: var(--colorNeutralStroke1Hover); }
+.input-shell:focus-within {
+  border-color: var(--colorBrandStroke1);
+  border-bottom-width: 2px;
+}
+.input-shell.has-error { border-color: var(--colorStatusDangerBorderActive); }
+
+.input-label {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--colorNeutralForeground4);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: font-size 0.1s ease-in-out, top 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+/* floated state: label rides up to the top of the box */
+.input-shell.is-floating .input-label {
+  top: 3px;
+  transform: none;
+  font-size: 0.625rem;       /* 10px */
+  line-height: 0.875rem;     /* 14px */
+}
+
+.input-shell input {
+  width: 100%;
+  height: 40px;
+  padding: 15px 0 1px;       /* leaves room for the floating label */
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* "Show" toggle inside the field — only rendered once something is typed */
+.show-button {
+  flex: 0 0 auto;
+  margin-left: 4px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--colorNeutralForeground3);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  cursor: pointer;
+}
+.show-button:hover { color: var(--colorNeutralForeground2); text-decoration: underline; }
+.show-button:focus-visible { outline: 2px solid #000; outline-offset: 1px; }
+.show-button[hidden] { display: none; }
+
+/* ── Validation message ─────────────────────────────────────────────────── */
+
+.validation-message {
+  display: none;
+  position: relative;
+  margin: 2px 0 0;
+  padding-left: 16px;
+  font-size: 0.75rem;        /* 12px */
+  line-height: 1rem;         /* 16px */
+  color: var(--colorPaletteRedForeground1);
+}
+.validation-message.is-visible { display: block; }
+.validation-message .validation-icon {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+/* ── Actions: primary button + secondary link ───────────────────────────── */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding-top: 32px;
+}
+
+.primary-button {
+  width: 100%;
+  min-height: 32px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--borderRadiusMedium);
+  background-color: var(--colorBrandBackground);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  cursor: pointer;
+  text-align: center;
+  touch-action: manipulation;
+}
+.primary-button:hover { background-color: var(--colorBrandBackgroundHover); }
+.primary-button:active { background-color: var(--colorBrandBackgroundPressed); }
+.primary-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+.view-footer {
+  padding-top: 32px;
+  text-align: center;
+}
+
+/* ── Links ──────────────────────────────────────────────────────────────── */
+
+.link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colorBrandForegroundLink);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+.link:hover { color: var(--colorBrandForegroundLinkHover); text-decoration: underline; }
+.link:active { color: var(--colorBrandForegroundLinkPressed); text-decoration: underline; }
+.link:focus-visible { outline: 2px solid #000; outline-offset: 1px; }
+
+/* ── Footer (Help and feedback · Terms of use · Privacy and cookies) ─────── */
+
+.footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  row-gap: 8px;
+}
+
+.footer-links .link { color: var(--colorNeutralForeground2); }
+
+.footer-note {
+  margin: 8px 0 0;
+  font-size: 0.75rem;        /* 12px */
+  line-height: 1rem;
+  color: var(--colorNeutralForeground3);
+}
+
+/* ── Demo status line (this is a mockup — nothing is really sent) ────────── */
+
+.demo-status {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--colorNeutralForeground3);
+}
+.demo-status[hidden] { display: none; }
+
+/* ── Small screens: drop the photo, go edge-to-edge ─────────────────────── */
+
+@media (max-width: 600px), (max-height: 480px) {
+  .background-image-holder,
+  .background-image { display: none; }
+
+  .outer {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: 0;
+    box-shadow: none;
+    min-width: 0;
+  }
+
+  .footer { padding: 0 12px 24px; }
+}

@@ -425,8 +425,24 @@
     var ERRORS = {
       empty:       'Enter a valid email address, phone number, or Skype name.',
       invalidFmt:  'Enter a valid email address, phone number, or Skype name.',
-      notFound:    "We couldn\u2019t find an account with that username. Try another, or \u003Ca href='https://signup.live.com' target='_blank'\u003Eget a new Microsoft account\u003C/a\u003E.",
+      // The real page also answers with "We couldn't find an account with that
+      // username…" — that check happens on the server, which this mockup has
+      // none of, so a valid-looking name simply moves on to the next step.
     };
+
+    // ── Remember the account between the steps of the flow ───────────────────
+    //    sign in → enter password ⇄ get a code to sign in
+    var EMAIL_KEY = 'msft-demo-email';
+
+    function savedEmail() {
+      try { return window.localStorage.getItem(EMAIL_KEY) || ''; } catch (e) { return ''; }
+    }
+
+    function nextStep(value) {
+      var email = encodeURIComponent(value.trim());
+      try { window.localStorage.setItem(EMAIL_KEY, value.trim()); } catch (e) {}
+      window.location.href = 'enter-password.html?email=' + email;
+    }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
     function showError(msg) {
@@ -464,6 +480,11 @@
       return false;
     }
 
+    // ── Prefill: ?email= passed back from a later step, or the last one used ──
+    var fromQuery = new URLSearchParams(window.location.search).get('email');
+    if (fromQuery) input.value = fromQuery;
+    else if (savedEmail()) input.value = savedEmail();
+
     // ── Validation on Next click ──────────────────────────────────────────────
     btn.addEventListener('click', function (e) {
       e.preventDefault();
@@ -483,10 +504,8 @@
         return;
       }
 
-      // 3. Simulate "account not found" for valid-looking input
-      //    (In the real page this comes from the server after form submit)
-      showError(ERRORS.notFound);
-      input.focus();
+      // 3. Valid → carry the account over to the password step
+      nextStep(value);
     });
 
     // ── Clear error while typing ──────────────────────────────────────────────
