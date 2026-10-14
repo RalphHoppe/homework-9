@@ -318,7 +318,6 @@
     .tile-img { position: relative; width: 48px; height: 48px; }
     img.tile-img { display: block; }
     .row.tile .table:focus { outline: #000 dashed 1px; background-color: rgba(0, 0, 0, 0.1); }
-    .row.tile .table.selected { background-color: rgba(0, 0, 0, 0.1); }
     .row.tile .content > * { word-wrap: break-word; }
     .row.tile .content small { font-size: 80%; }
 
@@ -330,7 +329,6 @@
       right: 44px;
     }
     .button-field-container { display: flex; align-items: center; }
-    .button-field-container .button-item + .button-item { margin-left: auto; }
 
     input[type="button"] {
       color: #000;
@@ -400,7 +398,7 @@
           <div class="form-group account-list" role="list" aria-labelledby="loginDescription">
 
             <div class="row tile" role="listitem">
-              <div id="aadTile" class="table" tabindex="0" role="button" aria-pressed="false" data-account="work">
+              <div id="aadTile" class="table" tabindex="0" role="button" data-account="work">
                 <div class="table-row">
                   <div class="table-cell tile-img">
                     <img class="tile-img" width="48" height="48" role="presentation" alt=""
@@ -416,7 +414,7 @@
             </div>
 
             <div class="row tile" role="listitem">
-              <div id="msaTile" class="table" tabindex="0" role="button" aria-pressed="false" data-account="personal">
+              <div id="msaTile" class="table" tabindex="0" role="button" data-account="personal">
                 <div class="table-row">
                   <div class="table-cell tile-img">
                     <img class="tile-img" width="48" height="48" role="presentation" alt=""
@@ -445,7 +443,9 @@
             </div>
           </div>
 
-          <!-- Back · Next, pinned to the bottom of the card -->
+          <!-- Back, pinned to the bottom of the card.
+               There is no Next button: picking one of the accounts is what
+               moves the flow on, exactly as on the real page. -->
           <div class="win-button-pin-bottom">
             <div class="row">
               <div class="button-field-container">
@@ -456,15 +456,6 @@
                     class="win-button button-secondary button secondary"
                     value="Back"
                     data-nav="index.html"
-                  />
-                </div>
-                <div class="button-item">
-                  <input
-                    type="submit"
-                    id="idSIButton9"
-                    class="win-button button_primary button primary"
-                    value="Next"
-                    style="display: none"
                   />
                 </div>
               </div>
@@ -489,34 +480,28 @@
   <script src="flow.js"></script>
   <script>
     // ── Page behaviour for the account picker ────────────────────────────────
-    //    Same order as the real page: pick one of the two accounts, then Next.
-    //    "Personal account" continues to "Get a code to sign in"; the work or
-    //    school account continues to the password step.
+    //    There is no Next button on this page: choosing one of the two
+    //    accounts is what moves the flow on. "Personal account" continues to
+    //    "Get a code to sign in"; the work or school account continues to the
+    //    password step.
     document.addEventListener('DOMContentLoaded', function () {
       var tiles = [].slice.call(document.querySelectorAll('.row.tile .table'));
-      var next  = document.getElementById('idSIButton9');
 
-      var email = window.Flow ? window.Flow.email : 'test@test.com';
+      function choose(tile) {
+        var target = tile.getAttribute('data-account') === 'personal'
+          ? 'get-a-code.html'      // personal → send a code
+          : 'enter-password.html'; // work or school → enter your password
 
-      function select(tile) {
-        tiles.forEach(function (t) {
-          t.classList.remove('selected');
-          t.setAttribute('aria-pressed', 'false');
-        });
-        tile.classList.add('selected');
-        tile.setAttribute('aria-pressed', 'true');
-        // the real page keeps Next hidden until an account has been chosen
-        next.style.display = 'inline-block';
+        window.Flow.goTo(window.Flow.withEmail(target));
       }
 
       tiles.forEach(function (tile, index) {
-        tile.addEventListener('click', function () { select(tile); });
+        tile.addEventListener('click', function () { choose(tile); });
 
         tile.addEventListener('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            select(tile);
-            next.focus();
+            choose(tile);
           }
           if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
             e.preventDefault();
@@ -527,19 +512,6 @@
             tiles[(index - 1 + tiles.length) % tiles.length].focus();
           }
         });
-      });
-
-      next.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        var chosen = tiles.filter(function (t) { return t.classList.contains('selected'); })[0];
-        if (!chosen) return;
-
-        var target = chosen.getAttribute('data-account') === 'personal'
-          ? 'get-a-code.html'      // personal → send a code
-          : 'enter-password.html'; // work or school → enter your password
-
-        window.Flow.goTo(window.Flow.withEmail(target));
       });
     });
   </script>
