@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+  <title>Enter your code</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Background layers -->
+  <div class="background-image-holder" role="presentation"></div>
+  <div class="background-image" role="img" aria-label="Background image"></div>
+
+  <div class="outer">
+    <div class="middle">
+    <div class="stack">
+
+      <!-- ═══ Card ═══ -->
+      <div class="card">
+
+        <!-- Banner: back arrow (left) · Microsoft logo (centre) -->
+        <div class="banner">
+          <button
+            type="button"
+            class="icon-button"
+            data-nav="index.html"
+            aria-label="Back"
+            title="Back"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.73 19.8a.75.75 0 0 0 1.04-1.1l-6.25-5.95h14.73a.75.75 0 0 0 0-1.5H5.52l6.25-5.95a.75.75 0 0 0-1.04-1.1l-7.42 7.08a1 1 0 0 0 0 1.44l7.42 7.07Z" />
+            </svg>
+          </button>
+
+          <img class="logo" role="img" alt="Microsoft" src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJNaWNyb3NvZnQiIGRhdGEtdGVzdGlkPSJtaWNyb3NvZnRMb2dvIiByb2xlPSJpbWciIHdpZHRoPSIxMTQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxMTQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTQ3LjI5OTcgNS4zMDAwNlYxOS43MDAxSDQ0Ljc5OTdWOC40MDAwNkg0NC43NjY0TDQwLjI5OTcgMTkuNzAwMUgzOC42MzNMMzQuMDY2NCA4LjQwMDA2SDM0LjAzM1YxOS43MDAxSDMxLjczM1Y1LjMwMDA2SDM1LjMzM0wzOS40NjY0IDE1Ljk2NjdIMzkuNTMzTDQzLjg5OTcgNS4zMDAwNkg0Ny4yOTk3Wk00OS4zNjY0IDYuNDAwMDZDNDkuMzY2NCA2LjAwMDA2IDQ5LjQ5OTcgNS42NjY3MyA0OS43OTk3IDUuNDAwMDZDNTAuMDk5NyA1LjEzMzQgNTAuNDMzIDUuMDAwMDYgNTAuODMzIDUuMDAwMDZDNTEuMjY2NCA1LjAwMDA2IDUxLjYzMyA1LjEzMzQgNTEuODk5NyA1LjQzMzRDNTIuMTY2NCA1LjcwMDA2IDUyLjMzMyA2LjAzMzQgNTIuMzMzIDYuNDMzNEM1Mi4zMzMgNi44MzM0IDUyLjE5OTcgNy4xNjY3MyA1MS44OTk3IDcuNDMzNEM1MS41OTk3IDcuNzAwMDYgNTEuMjY2NCA3LjgzMzQgNTAuODMzIDcuODMzNEM1MC4zOTk3IDcuODMzNCA1MC4wNjY0IDcuNzAwMDYgNDkuNzk5NyA3LjQzMzRDNDkuNTMzIDcuMTAwMDYgNDkuMzY2NCA2Ljc2NjczIDQ5LjM2NjQgNi40MDAwNlpNNTIuMDY2NCA5LjM2NjczVjE5LjcwMDFINDkuNjMzVjkuMzY2NzNINTIuMDY2NFpNNTkuNDMzIDE3LjkzMzRDNTkuNzk5NyAxNy45MzM0IDYwLjE5OTcgMTcuODMzNCA2MC42MzMgMTcuNjY2N0M2MS4wNjY0IDE3LjUwMDEgNjEuNDY2NCAxNy4yNjY3IDYxLjgzMyAxNy4wMDAxVjE5LjI2NjdDNjEuNDMzIDE5LjUwMDEgNjAuOTk5NyAxOS42NjY3IDYwLjQ5OTcgMTkuNzY2N0M1OS45OTk3IDE5Ljg2NjcgNTkuNDY2NCAxOS45MzM0IDU4Ljg2NjQgMTkuOTMzNEM1Ny4zMzMgMTkuOTMzNCA1Ni4wOTk3IDE5LjQ2NjcgNTUuMTY2NCAxOC41MDAxQzU0LjE5OTcgMTcuNTMzNCA1My43MzMgMTYuMzAwMSA1My43MzMgMTQuODMzNEM1My43MzMgMTMuMTY2NyA1NC4yMzMgMTEuODAwMSA1NS4xOTk3IDEwLjczMzRDNTYuMTY2NCA5LjY2NjczIDU3LjUzMyA5LjEzMzQgNTkuMzMzIDkuMTMzNEM1OS43OTk3IDkuMTMzNCA2MC4yMzMgOS4yMDAwNiA2MC42OTk3IDkuMzAwMDZDNjEuMTY2NCA5LjQzMzQgNjEuNTMzIDkuNTY2NzMgNjEuNzk5NyA5LjcwMDA2VjEyLjAzMzRDNjEuNDMzIDExLjc2NjcgNjEuMDMzIDExLjUzMzQgNjAuNjY2NCAxMS40MDAxQzYwLjI2NjQgMTEuMjMzNCA1OS44NjY0IDExLjE2NjcgNTkuNDY2NCAxMS4xNjY3QzU4LjQ5OTcgMTEuMTY2NyA1Ny43MzMgMTEuNDY2NyA1Ny4xMzMgMTIuMTAwMUM1Ni41MzMgMTIuNzMzNCA1Ni4yMzMgMTMuNTY2NyA1Ni4yMzMgMTQuNjMzNEM1Ni4yMzMgMTUuNjY2NyA1Ni40OTk3IDE2LjUwMDEgNTcuMDY2NCAxNy4wNjY3QzU3LjY5OTcgMTcuNjMzNCA1OC40NjY0IDE3LjkzMzQgNTkuNDMzIDE3LjkzMzRaTTY4LjczMyA5LjIwMDA2QzY4LjkzMyA5LjIwMDA2IDY5LjA5OTcgOS4yMDAwNiA2OS4yNjY0IDkuMjMzNEM2OS40MzMgOS4yNjY3MyA2OS41NjY0IDkuMzAwMDYgNjkuNjY2NCA5LjMzMzRWMTEuODAwMUM2OS41MzMgMTEuNzAwMSA2OS4zNjY0IDExLjYzMzQgNjkuMDk5NyAxMS41MzM0QzY4Ljg2NjQgMTEuNDMzNCA2OC41NjY0IDExLjQwMDEgNjguMTk5NyAxMS40MDAxQzY3LjU5OTcgMTEuNDAwMSA2Ny4wOTk3IDExLjY2NjcgNjYuNjk5NyAxMi4xNjY3QzY2LjI5OTcgMTIuNjY2NyA2Ni4wNjY0IDEzLjQzMzQgNjYuMDY2NCAxNC41MDAxVjE5LjcwMDFINjMuNjMzVjkuMzY2NzNINjYuMDY2NFYxMS4wMDAxSDY2LjA5OTdDNjYuMzMzIDEwLjQzMzQgNjYuNjY2NCAxMC4wMDAxIDY3LjA5OTcgOS42NjY3M0M2Ny41NjY0IDkuMzY2NzMgNjguMDk5NyA5LjIwMDA2IDY4LjczMyA5LjIwMDA2Wk02OS43OTk3IDE0LjcwMDFDNjkuNzk5NyAxMy4wMDAxIDcwLjI2NjQgMTEuNjMzNCA3MS4yMzMgMTAuNjMzNEM3Mi4xOTk3IDkuNjMzNCA3My41MzMgOS4xMzM0IDc1LjI2NjQgOS4xMzM0Qzc2Ljg2NjQgOS4xMzM0IDc4LjEzMyA5LjYwMDA2IDc5LjAzMyAxMC41NjY3Qzc5LjkzMyAxMS41MzM0IDgwLjM5OTcgMTIuODMzNCA4MC4zOTk3IDE0LjQ2NjdDODAuMzk5NyAxNi4xMzM0IDc5LjkzMyAxNy40NjY3IDc4Ljk2NjQgMTguNDY2N0M3Ny45OTk3IDE5LjQ2NjcgNzYuNjk5NyAxOS45NjY3IDc1LjAzMyAxOS45NjY3QzczLjQzMyAxOS45NjY3IDcyLjE2NjQgMTkuNTAwMSA3MS4yMzMgMTguNTY2N0M3MC4yNjY0IDE3LjYwMDEgNjkuNzk5NyAxNi4zMDAxIDY5Ljc5OTcgMTQuNzAwMVpNNzIuMzMzIDE0LjYwMDFDNzIuMzMzIDE1LjY2NjcgNzIuNTY2NCAxNi41MDAxIDczLjA2NjQgMTcuMDY2N0M3My41NjY0IDE3LjYzMzQgNzQuMjY2NCAxNy45MzM0IDc1LjE2NjQgMTcuOTMzNEM3Ni4wNjY0IDE3LjkzMzQgNzYuNzMzIDE3LjYzMzQgNzcuMTk5NyAxNy4wNjY3Qzc3LjY2NjQgMTYuNTAwMSA3Ny44OTk3IDE1LjY2NjcgNzcuODk5NyAxNC41MzM0Qzc3Ljg5OTcgMTMuNDMzNCA3Ny42NjY0IDEyLjYwMDEgNzcuMTY2NCAxMi4wMzM0Qzc2LjY5OTcgMTEuNDY2NyA3Ni4wMzMgMTEuMjAwMSA3NS4xNjY0IDExLjIwMDFDNzQuMjY2NCAxMS4yMDAxIDczLjU5OTcgMTEuNTAwMSA3My4wOTk3IDEyLjEwMDFDNzIuNTY2NCAxMi42NjY3IDcyLjMzMyAxMy41MDAxIDcyLjMzMyAxNC42MDAxWk04My45OTk3IDEyLjEwMDFDODMuOTk5NyAxMi40MzM0IDg0LjA5OTcgMTIuNzMzNCA4NC4zMzMgMTIuOTMzNEM4NC41NjY0IDEzLjEzMzQgODUuMDMzIDEzLjM2NjcgODUuNzk5NyAxMy42NjY3Qzg2Ljc2NjQgMTQuMDY2NyA4Ny40NjY0IDE0LjUwMDEgODcuODMzIDE0Ljk2NjdDODguMjMzIDE1LjQ2NjcgODguNDMzIDE2LjAzMzQgODguNDMzIDE2LjczMzRDODguNDMzIDE3LjcwMDEgODguMDY2NCAxOC41MDAxIDg3LjI5OTcgMTkuMDY2N0M4Ni41NjY0IDE5LjY2NjcgODUuNTMzIDE5Ljk2NjcgODQuMjY2NCAxOS45NjY3QzgzLjgzMyAxOS45NjY3IDgzLjM2NjQgMTkuOTAwMSA4Mi44MzMgMTkuODAwMUM4Mi4yOTk3IDE5LjcwMDEgODEuODY2NCAxOS41NjY3IDgxLjQ5OTcgMTkuNDAwMVYxNy4wMDAxQzgxLjkzMyAxNy4zMDAxIDgyLjQzMyAxNy41NjY3IDgyLjkzMyAxNy43MzM0QzgzLjQzMyAxNy45MDAxIDgzLjg5OTcgMTguMDAwMSA4NC4zMzMgMTguMDAwMUM4NC44NjY0IDE4LjAwMDEgODUuMjk5NyAxNy45MzM0IDg1LjUzMyAxNy43NjY3Qzg1Ljc5OTcgMTcuNjAwMSA4NS45MzMgMTcuMzY2NyA4NS45MzMgMTcuMDAwMUM4NS45MzMgMTYuNjY2NyA4NS43OTk3IDE2LjM2NjcgODUuNTMzIDE2LjE2NjdDODUuMjY2NCAxNS45MzM0IDg0LjczMyAxNS42NjY3IDgzLjk5OTcgMTUuMzY2N0M4My4wOTk3IDE1LjAwMDEgODIuNDY2NCAxNC41NjY3IDgyLjA5OTcgMTQuMTAwMUM4MS43MzMgMTMuNjMzNCA4MS41MzMgMTMuMDMzNCA4MS41MzMgMTIuMzAwMUM4MS41MzMgMTEuMzY2NyA4MS44OTk3IDEwLjYwMDEgODIuNjMzIDEwLjAwMDFDODMuMzY2NCA5LjQwMDA2IDg0LjMzMyA5LjEwMDA2IDg1LjQ5OTcgOS4xMDAwNkM4NS44NjY0IDkuMTAwMDYgODYuMjY2NCA5LjEzMzQgODYuNjk5NyA5LjIzMzRDODcuMTMzIDkuMzAwMDYgODcuNTMzIDkuNDMzNCA4Ny44MzMgOS41MzM0VjExLjgzMzRDODcuNDk5NyAxMS42MzM0IDg3LjEzMyAxMS40MzM0IDg2LjY5OTcgMTEuMjY2N0M4Ni4yNjY0IDExLjEwMDEgODUuODMzIDExLjAzMzQgODUuNDMzIDExLjAzMzRDODQuOTY2NCAxMS4wMzM0IDg0LjU5OTcgMTEuMTMzNCA4NC4zNjY0IDExLjMwMDFDODQuMTMzIDExLjUzMzQgODMuOTk5NyAxMS43NjY3IDgzLjk5OTcgMTIuMTAwMVpNODkuNDY2NCAxNC43MDAxQzg5LjQ2NjQgMTMuMDAwMSA4OS45MzMgMTEuNjMzNCA5MC44OTk3IDEwLjYzMzRDOTEuODY2NCA5LjYzMzQgOTMuMTk5NyA5LjEzMzQgOTQuOTMzIDkuMTMzNEM5Ni41MzMgOS4xMzM0IDk3Ljc5OTcgOS42MDAwNiA5OC42OTk3IDEwLjU2NjdDOTkuNTk5NyAxMS41MzM0IDEwMC4wNjYgMTIuODMzNCAxMDAuMDY2IDE0LjQ2NjdDMTAwLjA2NiAxNi4xMzM0IDk5LjU5OTcgMTcuNDY2NyA5OC42MzMgMTguNDY2N0M5Ny42NjY0IDE5LjQ2NjcgOTYuMzY2NCAxOS45NjY3IDk0LjY5OTcgMTkuOTY2N0M5My4wOTk3IDE5Ljk2NjcgOTEuODMzIDE5LjUwMDEgOTAuODk5NyAxOC41NjY3Qzg5Ljk2NjQgMTcuNjAwMSA4OS40NjY0IDE2LjMwMDEgODkuNDY2NCAxNC43MDAxWk05MS45OTk3IDE0LjYwMDFDOTEuOTk5NyAxNS42NjY3IDkyLjIzMyAxNi41MDAxIDkyLjczMyAxNy4wNjY3QzkzLjIzMyAxNy42MzM0IDkzLjkzMyAxNy45MzM0IDk0LjgzMyAxNy45MzM0Qzk1LjczMyAxNy45MzM0IDk2LjM5OTcgMTcuNjMzNCA5Ni44NjY0IDE3LjA2NjdDOTcuMzMzIDE2LjUwMDEgOTcuNTY2NCAxNS42NjY3IDk3LjU2NjQgMTQuNTMzNEM5Ny41NjY0IDEzLjQzMzQgOTcuMzMzIDEyLjYwMDEgOTYuODMzIDEyLjAzMzRDOTYuMzY2NCAxMS40NjY3IDk1LjY5OTcgMTEuMjAwMSA5NC44MzMgMTEuMjAwMUM5My45MzMgMTEuMjAwMSA5My4yNjY0IDExLjUwMDEgOTIuNzY2NCAxMi4xMDAxQzkyLjI2NjQgMTIuNjY2NyA5MS45OTk3IDEzLjUwMDEgOTEuOTk5NyAxNC42MDAxWk0xMDguMTMzIDExLjM2NjdIMTA0LjVWMTkuNzAwMUgxMDIuMDMzVjExLjM2NjdIMTAwLjNWOS4zNjY3M0gxMDIuMDMzVjcuOTMzNEMxMDIuMDMzIDYuODMzNCAxMDIuNCA1Ljk2NjczIDEwMy4xIDUuMjY2NzNDMTAzLjggNC41NjY3MyAxMDQuNyA0LjIzMzQgMTA1LjggNC4yMzM0QzEwNi4xIDQuMjMzNCAxMDYuMzY2IDQuMjMzNCAxMDYuNiA0LjI2NjczQzEwNi44MzMgNC4zMDAwNyAxMDcuMDMzIDQuMzMzNCAxMDcuMiA0LjQwMDA3VjYuNTAwMDZDMTA3LjEzMyA2LjQ2NjczIDEwNi45NjYgNi40MDAwNiAxMDYuNzY2IDYuMzMzNEMxMDYuNTY2IDYuMjY2NzMgMTA2LjMzMyA2LjIzMzQgMTA2LjA2NiA2LjIzMzRDMTA1LjU2NiA2LjIzMzQgMTA1LjE2NiA2LjQwMDA2IDEwNC45IDYuNzAwMDZDMTA0LjYzMyA3LjAzMzQgMTA0LjUgNy41MDAwNiAxMDQuNSA4LjEwMDA2VjkuMzMzNEgxMDguMTMzVjcuMDAwMDZMMTEwLjU2NiA2LjI2NjczVjkuMzMzNEgxMTMuMDMzVjExLjMzMzRIMTEwLjU2NlYxNi4xNjY3QzExMC41NjYgMTYuODAwMSAxMTAuNjY2IDE3LjI2NjcgMTEwLjkgMTcuNTAwMUMxMTEuMTMzIDE3Ljc2NjcgMTExLjUgMTcuOTAwMSAxMTIgMTcuOTAwMUMxMTIuMTMzIDE3LjkwMDEgMTEyLjMgMTcuODY2NyAxMTIuNSAxNy44MDAxQzExMi43IDE3LjczMzQgMTEyLjg2NiAxNy42NjY3IDExMy4wMzMgMTcuNTY2N1YxOS41NjY3QzExMi44NjYgMTkuNjY2NyAxMTIuNjMzIDE5LjczMzQgMTEyLjI2NiAxOS44MDAxQzExMS45IDE5Ljg2NjcgMTExLjU2NiAxOS45MDAxIDExMS4yIDE5LjkwMDFDMTEwLjE2NiAxOS45MDAxIDEwOS40IDE5LjYzMzQgMTA4LjkgMTkuMDY2N0MxMDguNCAxOC41MzM0IDEwOC4xMzMgMTcuNzAwMSAxMDguMTMzIDE2LjYwMDFWMTEuMzY2N1oiIGZpbGw9IiM3MzczNzMiPjwvcGF0aD48cGF0aCBkPSJNMTMuMjM4MyAxMy4yMzgzSDI0LjVWMjQuNUgxMy4yMzgzVjEzLjIzODNaIiBmaWxsPSIjRkZCOTAwIj48L3BhdGg+PHBhdGggZD0iTTAuNSAxMy4yMzgzSDExLjc2MTdWMjQuNUgwLjVWMTMuMjM4M1oiIGZpbGw9IiMwMEE0RUYiPjwvcGF0aD48cGF0aCBkPSJNMTMuMjM4MyAwLjVIMjQuNVYxMS43NjE3SDEzLjIzODNWMC41WiIgZmlsbD0iIzdGQkEwMCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLjUgMC41SDExLjc2MTdWMTEuNzYxN0gwLjVWMC41WiIgZmlsbD0iI0YyNTAyMiI+PC9wYXRoPjwvc3ZnPg==" />
+
+          <span class="banner-end" aria-hidden="true"></span>
+        </div>
+
+        <!-- Account chip -->
+        <div class="badge-row">
+          <div class="identity-badge" id="identityBadge" aria-label="test@test.com">
+            <span id="bannerText" data-email>test@test.com</span>
+          </div>
+        </div>
+
+        <h1 class="title" id="loginHeader">Enter your code</h1>
+
+        <p class="subtitle">
+          If <span data-email>test@test.com</span> matches the email address on your
+          account, we'll send you a code.
+        </p>
+
+        <form id="codeForm" novalidate>
+          <div class="code-field">
+            <div class="code-entry" id="codeEntry" role="group" aria-label="Enter your code">
+              <input type="text" id="codeEntry-0" maxlength="6" inputmode="numeric"
+                autocomplete="one-time-code" aria-label="Enter code digit 1" aria-describedby="codeError" />
+              <input type="text" id="codeEntry-1" maxlength="1" inputmode="numeric"
+                autocomplete="one-time-code" aria-label="Enter code digit 2" aria-describedby="codeError" />
+              <input type="text" id="codeEntry-2" maxlength="1" inputmode="numeric"
+                autocomplete="one-time-code" aria-label="Enter code digit 3" aria-describedby="codeError" />
+              <input type="text" id="codeEntry-3" maxlength="1" inputmode="numeric"
+                autocomplete="one-time-code" aria-label="Enter code digit 4" aria-describedby="codeError" />
+              <input type="text" id="codeEntry-4" maxlength="1" inputmode="numeric"
+                autocomplete="one-time-code" aria-label="Enter code digit 5" aria-describedby="codeError" />
+              <input type="text" id="codeEntry-5" maxlength="1" inputmode="numeric"
+                autocomplete="one-time-code" aria-label="Enter code digit 6" aria-describedby="codeError" />
+            </div>
+
+            <p class="validation-message" id="codeError" role="alert">
+              <svg class="validation-icon" viewBox="0 0 12 12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 11A5 5 0 1 0 6 1a5 5 0 0 0 0 10Zm-.75-2.75a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0Zm.26-4.84a.5.5 0 0 1 .98 0l.01.09v2.59a.5.5 0 0 1-1 0V3.41Z" />
+              </svg>
+              <span id="codeErrorText">Enter the code we sent you.</span>
+            </p>
+
+            <p class="demo-status" id="demoStatus" role="status" hidden></p>
+          </div>
+        </form>
+
+        <div class="view-footer">
+          <a class="link" href="get-a-code.html" id="noCodeLink">Didn't get a code?</a>
+        </div>
+
+      </div><!-- /card -->
+
+      </div><!-- /stack -->
+    </div><!-- /middle -->
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="footer">
+      <div class="footer-links">
+        <button type="button" class="link" id="helpAndFeedback">Help and feedback</button>
+        <a class="link" href="https://www.microsoft.com/en-US/servicesagreement/" target="_blank" rel="noreferrer noopener">Terms of use</a>
+        <a class="link" href="https://privacy.microsoft.com/en-US/privacystatement" target="_blank" rel="noreferrer noopener">Privacy and cookies</a>
+      </div>
+      <p class="footer-note">
+        Use private browsing if this is not your device.
+        <a class="link" href="https://go.microsoft.com/fwlink/?LinkID=2281649" target="_blank" rel="noreferrer noopener">Learn more</a>
+      </p>
+    </footer>
+
+  </div><!-- /outer -->
+
+  <script src="flow.js"></script>
+  <script>
+    // ── Page behaviour for the one-time-code step ───────────────────────────
+    document.addEventListener('DOMContentLoaded', function () {
+      var form       = document.getElementById('codeForm');
+      var boxes      = [].slice.call(document.querySelectorAll('.code-entry input'));
+      var error      = document.getElementById('codeError');
+      var statusLine = document.getElementById('demoStatus');
+      var email      = window.Flow ? window.Flow.email : 'test@test.com';
+
+      document.getElementById('identityBadge').setAttribute('aria-label', email);
+
+      function value() {
+        return boxes.map(function (b) { return b.value; }).join('');
+      }
+
+      function clearError() {
+        error.classList.remove('is-visible');
+        boxes.forEach(function (b) { b.classList.remove('has-error'); b.removeAttribute('aria-invalid'); });
+      }
+
+      function fillFrom(index, digits) {
+        for (var i = 0; i < digits.length && index + i < boxes.length; i++) {
+          boxes[index + i].value = digits[i];
+        }
+        var next = Math.min(index + digits.length, boxes.length - 1);
+        boxes[next].focus();
+        boxes[next].select();
+      }
+
+      boxes.forEach(function (box, index) {
+        // keep digits only
+        box.addEventListener('input', function () {
+          clearError();
+          var digits = box.value.replace(/\D/g, '');
+
+          if (digits.length > 1) {          // typing fast, or pasting
+            fillFrom(index, digits.slice(0, boxes.length - index));
+          } else {
+            box.value = digits;
+            if (digits && index < boxes.length - 1) {
+              boxes[index + 1].focus();
+            }
+          }
+
+          // the real page submits as soon as all six digits are in
+          if (value().length === boxes.length) form.requestSubmit ? form.requestSubmit() : submit();
+        });
+
+        box.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace' && !box.value && index > 0) {
+            e.preventDefault();
+            boxes[index - 1].focus();
+            boxes[index - 1].value = '';
+          }
+          if (e.key === 'ArrowLeft' && index > 0) { e.preventDefault(); boxes[index - 1].focus(); }
+          if (e.key === 'ArrowRight' && index < boxes.length - 1) { e.preventDefault(); boxes[index + 1].focus(); }
+        });
+
+        box.addEventListener('focus', function () { box.select(); });
+      });
+
+      function submit() {
+        if (value().length < boxes.length) {
+          document.getElementById('codeErrorText').textContent = 'Enter the code we sent you.';
+          error.classList.add('is-visible');
+          boxes.forEach(function (b) { b.classList.add('has-error'); b.setAttribute('aria-invalid', 'true'); });
+          boxes[0].focus();
+          return;
+        }
+
+        statusLine.textContent = 'Demo only: no code is checked or sent anywhere.';
+        statusLine.hidden = false;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submit();
+      });
+
+      document.getElementById('helpAndFeedback')
+        .addEventListener('click', function () { /* no-op in the mockup */ });
+
+      boxes[0].focus();
+    });
+  </script>
+
+</body>
+</html>

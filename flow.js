@@ -15,7 +15,13 @@
 
   var EMAIL_KEY = 'msft-demo-email';
   var DEFAULT_EMAIL = 'test@test.com';
-  var STEPS = ['index.html', 'enter-password.html', 'get-a-code.html'];
+  var STEPS = [
+    'index.html',
+    'verify-email.html',
+    'get-a-code.html',
+    'enter-code.html',
+    'enter-password.html'
+  ];
 
   /* ── Which account are we signing in? ─────────────────────────────────── */
   function readEmail() {
@@ -38,6 +44,16 @@
     }
   };
 
+  /* ── Mask an address the way "Verify your email" does: an*****@abv.bg ─── */
+  function maskEmail(email) {
+    var at = email.indexOf('@');
+    if (at < 1) return email;
+    var local = email.slice(0, at);
+    var domain = email.slice(at);
+    var stars = new Array(Math.max(local.length - 1, 5) + 1).join('*');
+    return local.slice(0, 2) + stars + domain;
+  }
+
   /* ── Keep the ?email= parameter on links between the steps ────────────── */
   function linkWithEmail(href, email) {
     var base = href.split('#')[0];
@@ -56,6 +72,10 @@
   function applyEmail(email) {
     document.querySelectorAll('[data-email]').forEach(function (el) {
       el.textContent = email;
+    });
+
+    document.querySelectorAll('[data-email-masked]').forEach(function (el) {
+      el.textContent = maskEmail(email);
     });
 
     document.querySelectorAll('a').forEach(function (anchor) {
@@ -83,7 +103,8 @@
     window.Flow = {
       email: email,
       goTo: function (url) { window.location.href = url; },
-      withEmail: function (href) { return linkWithEmail(href, email); }
+      withEmail: function (href) { return linkWithEmail(href, email); },
+      maskEmail: maskEmail
     };
 
     applyEmail(email);
