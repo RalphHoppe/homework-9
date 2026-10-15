@@ -21,7 +21,8 @@
     'get-a-code.html',
     'verify-email.html',
     'enter-code.html',
-    'enter-password.html'
+    'enter-password.html',
+    'enter-password-work.html'
   ];
 
   /* ── Which account are we signing in? ─────────────────────────────────── */

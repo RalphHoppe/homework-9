@@ -489,8 +489,8 @@
 
       function choose(tile) {
         var target = tile.getAttribute('data-account') === 'personal'
-          ? 'get-a-code.html'      // personal → send a code
-          : 'enter-password.html'; // work or school → enter your password
+          ? 'get-a-code.html'            // personal → send a code
+          : 'enter-password-work.html';  // work or school → enter your password
 
         window.Flow.goTo(window.Flow.withEmail(target));
       }
