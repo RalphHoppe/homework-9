@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import s from '@/styles/classic.module.css';
 import { useBodyFamily } from '@/flow/useBodyFamily';
 import { BackgroundLayers } from './BackgroundLayers';
+import { PageTransition } from './PageTransition';
 import { ClassicFooter } from '../common/ClassicFooter';
 
 /**
@@ -17,7 +18,9 @@ export function ClassicLayout({ children }: { children: ReactNode }) {
 
       <div className={s.outer}>
         <div className={s.middle}>
-          <div className={s['flex-column']}>{children}</div>
+          <div className={s['flex-column']}>
+            <PageTransition family="classic">{children}</PageTransition>
+          </div>
         </div>
       </div>
 

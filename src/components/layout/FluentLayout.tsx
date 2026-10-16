@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import s from '@/styles/fluent.module.css';
 import { useBodyFamily } from '@/flow/useBodyFamily';
 import { BackgroundLayers } from './BackgroundLayers';
+import { PageTransition } from './PageTransition';
 import { FluentFooter } from '../common/FluentFooter';
 
 /**
@@ -18,7 +19,9 @@ export function FluentLayout({ children }: { children: ReactNode }) {
       <div className={s.outer}>
         <div className={s.middle}>
           <div className={s.stack}>
-            <div className={s.card}>{children}</div>
+            <div className={s.card}>
+              <PageTransition family="fluent">{children}</PageTransition>
+            </div>
             <FluentFooter />
           </div>
         </div>
