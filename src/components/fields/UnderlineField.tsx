@@ -5,10 +5,12 @@ type Props = {
   id: string;
   value: string;
   onChange: (value: string) => void;
-  type?: 'email' | 'password';
+  type?: 'email' | 'password' | 'tel';
   placeholder?: string;
   autoComplete?: string;
-  ariaLabel: string;
+  /** the heading that names the field, as the real pages do */
+  labelledBy?: string;
+  ariaLabel?: string;
   describedBy?: string;
   invalid?: boolean;
   maxLength?: number;
@@ -18,7 +20,7 @@ type Props = {
 
 /**
  * The underlined text field of the old-style pages (styling comes from the
- * `input[type=email]` / `input[type=password]` rules).
+ * `input[type=email]` / `input[type=password]` / `input[type=tel]` rules).
  */
 export function UnderlineField({
   id,
@@ -27,6 +29,7 @@ export function UnderlineField({
   type = 'email',
   placeholder,
   autoComplete,
+  labelledBy,
   ariaLabel,
   describedBy,
   invalid,
@@ -44,6 +47,7 @@ export function UnderlineField({
       placeholder={placeholder}
       autoComplete={autoComplete}
       maxLength={maxLength}
+      aria-labelledby={labelledBy}
       aria-label={ariaLabel}
       aria-describedby={describedBy}
       aria-required

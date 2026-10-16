@@ -29,7 +29,10 @@ main.tsx ─▶ App.tsx ─▶ pages/* ─▶ components/* ─▶ styles/*
 - `layout/` — `ClassicLayout` and `FluentLayout` render the background layers and the
   `outer / middle` skeleton of their look, and set `data-family`. Every page picks one.
   Both wrap their content in `PageTransition`, which plays the animation the
-  reference pages play when the flow moves on (see below).
+  reference pages play when the flow moves on (see below). `ClassicLayout` takes a
+  `captured` flag: the two steps that were saved from the live flow carry ids on the
+  shell and the footer that the hand-written pages have no use for, and this renders
+  them (`BackgroundLayers`, `ClassicFooter`).
 - `brand/` — `MicrosoftLogo` (two sizes, one per look) and `icons.tsx` (the Fluent icon
   path data, copied from the captures — never redrawn).
 - `common/` — `IdentityBadge`, `IconButton` (back / close), `DemoNote`, and the two
@@ -49,12 +52,12 @@ change to one step from moving another. Tests sit next to them as `*.test.tsx`.
 `components/layout/PageTransition.tsx` plays the step-to-step animation, and the
 two families do it differently — both copied out of the captures:
 
-| | classic (`/`, `/pick-account`, `/work-password`) | Fluent (the other four) |
-| --- | --- | --- |
-| element | `.pagination-view` | `data-testid="routeAnimationFluent"` |
-| effect | slides 200px and fades in | fades in while the box changes height |
-| direction | in from the right going forward, from the left going back | none |
-| timing | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both` | `0.25s` fade, height `0.25s cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
+|           | classic (`/`, `/pick-account`, `/work-password`, `/approve-sign-in`, `/work-enter-code`) | Fluent (the other four)                                                             |
+| --------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| element   | `.pagination-view`                                                                       | `data-testid="routeAnimationFluent"`                                                |
+| effect    | slides 200px and fades in                                                                | fades in while the box changes height                                               |
+| direction | in from the right going forward, from the left going back                                | none                                                                                |
+| timing    | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both`                          | `0.25s` fade, height `0.25s cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
 
 The direction travels with the navigation: `useFlowNavigation` compares the two
 steps in `STEP_ORDER` and puts the answer in the router location state, which
@@ -89,6 +92,9 @@ effect, never during render.
   `.root .tile` and consumed as `s['tile']`.
 - Values are not rounded, converted or "cleaned up". If the reference says
   `padding: 24px 32px 32px`, the module says exactly that.
+- The two captured work steps disagree with the hand-written pages in one place — their
+  card leaves 28px under itself instead of 20px — so that value lives on a page class
+  (`.sign-in-box.verify-box`) rather than on the shared rule.
 - Two ids became classes during the port (`#usernameError`, `#passwordError`,
   `#alertRegion`) because CSS Modules cannot scope ids. The React markup uses them as
   **both** the class and the `id`, so existing selectors and tests keep working.
@@ -98,9 +104,10 @@ effect, never during render.
 ## Element ids are a contract
 
 The ids (`i0116`, `idA_PWD_ForgotPassword`, `proof-confirmation-email-input`, `codeEntry`,
-`aadTile`, `msaTile`, `bannerText`, …) come from the real pages and are reused verbatim as
-React `id`s. The reference links (`aria-describedby`, `for`/`id`) and the tests depend on
-them; renaming one is a breaking change, not a tidy-up.
+`aadTile`, `msaTile`, `bannerText`, `idDiv_SAOTCAS_Title`, `idTxtBx_SAOTCC_OTC`, …) come
+from the real pages and are reused verbatim as React `id`s. The reference links
+(`aria-describedby`, `for`/`id`) and the tests depend on them; renaming one is a breaking
+change, not a tidy-up.
 
 ## Testing
 

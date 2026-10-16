@@ -4,7 +4,8 @@
  *
  *   sign in ─┬─ personal ─→ get a code ─→ verify email ─→ enter code
  *            │                          └→ password (personal)
- *            └─ work     ─→ work password
+ *            └─ work     ─→ work password ─→ approve sign in request
+ *                                                        └→ enter code (work)
  */
 export const ROUTES = {
   signIn: '/',
@@ -14,6 +15,8 @@ export const ROUTES = {
   enterCode: '/enter-code',
   password: '/password',
   workPassword: '/work-password',
+  approveSignIn: '/approve-sign-in',
+  workEnterCode: '/work-enter-code',
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
@@ -27,4 +30,6 @@ export const STEP_ORDER: RoutePath[] = [
   ROUTES.enterCode,
   ROUTES.password,
   ROUTES.workPassword,
+  ROUTES.approveSignIn,
+  ROUTES.workEnterCode,
 ];

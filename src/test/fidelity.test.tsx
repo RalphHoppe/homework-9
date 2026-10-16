@@ -11,6 +11,8 @@ import { VerifyEmailPage } from '@/pages/VerifyEmailPage';
 import { EnterCodePage } from '@/pages/EnterCodePage';
 import { PasswordPage } from '@/pages/PasswordPage';
 import { WorkPasswordPage } from '@/pages/WorkPasswordPage';
+import { ApproveSignInPage } from '@/pages/ApproveSignInPage';
+import { EnterCodeWorkPage } from '@/pages/EnterCodeWorkPage';
 import { maskEmail } from '@/flow/account';
 
 /**
@@ -29,7 +31,17 @@ const pages: Array<{ route: string; file: string; element: ReactElement }> = [
   { route: '/verify-email', file: 'legacy/verify-email.html', element: <VerifyEmailPage /> },
   { route: '/enter-code', file: 'legacy/enter-code.html', element: <EnterCodePage /> },
   { route: '/password', file: 'legacy/enter-password.html', element: <PasswordPage /> },
-  { route: '/work-password', file: 'legacy/enter-password-work.html', element: <WorkPasswordPage /> },
+  {
+    route: '/work-password',
+    file: 'legacy/enter-password-work.html',
+    element: <WorkPasswordPage />,
+  },
+  { route: '/approve-sign-in', file: 'legacy/app-auth-work.html', element: <ApproveSignInPage /> },
+  {
+    route: '/work-enter-code',
+    file: 'legacy/enter-code-work.html',
+    element: <EnterCodeWorkPage />,
+  },
 ];
 
 /** JSX drops the whitespace between elements, so spacing says nothing here. */
@@ -55,9 +67,7 @@ function snapshot(route: string, element: ReactElement) {
 
   const result = {
     ids: page.flatMap((node) =>
-      [node, ...node.querySelectorAll('[id]')]
-        .map((candidate) => candidate.id)
-        .filter(Boolean),
+      [node, ...node.querySelectorAll('[id]')].map((candidate) => candidate.id).filter(Boolean),
     ),
     text: page.map((node) => node.textContent ?? '').join(''),
     title: document.title,
@@ -79,7 +89,10 @@ describe('the React pages match the legacy pages they replaced', () => {
         const reference = legacyDocument(file);
         // The reference file copies the address verbatim; the real page masks
         // it, and so does this one.
-        const rendered = squeeze(snapshot(route, element).text).replace(maskEmail(ACCOUNT), ACCOUNT);
+        const rendered = squeeze(snapshot(route, element).text).replace(
+          maskEmail(ACCOUNT),
+          ACCOUNT,
+        );
         expect(rendered).toBe(squeeze(reference.body.textContent ?? ''));
       });
 

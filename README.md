@@ -7,15 +7,17 @@ trust it.
 
 ## Pages
 
-| Route             | Page                      | Look              |
-| ----------------- | ------------------------- | ----------------- |
-| `/`               | Sign in                   | classic (2015-ish)|
-| `/pick-account`   | Pick an account           | classic           |
-| `/get-a-code`     | Get a code to sign in     | Fluent            |
-| `/verify-email`   | Verify your email         | Fluent            |
-| `/enter-code`     | Enter your code           | Fluent            |
-| `/password`       | Enter your password       | Fluent            |
-| `/work-password`  | Work or school password   | classic           |
+| Route              | Page                       | Look               |
+| ------------------ | -------------------------- | ------------------ |
+| `/`                | Sign in                    | classic (2015-ish) |
+| `/pick-account`    | Pick an account            | classic            |
+| `/get-a-code`      | Get a code to sign in      | Fluent             |
+| `/verify-email`    | Verify your email          | Fluent             |
+| `/enter-code`      | Enter your code            | Fluent             |
+| `/password`        | Enter your password        | Fluent             |
+| `/work-password`   | Work or school password    | classic            |
+| `/approve-sign-in` | Approve sign in request    | classic            |
+| `/work-enter-code` | Enter code (Authenticator) | classic            |
 
 `src/test/fidelity.test.tsx` is the guard on the whole idea: it renders every step and
 compares its element ids, copy and title against the HTML page it replaced.
@@ -30,9 +32,15 @@ real pages show. An unknown route goes back to `/`.
 
 ```
 sign-in ──▶ pick an account ──┬─▶ get a code ──▶ verify email ──▶ enter code
-                              └─▶ work or school password
-             └── "Use your password" ──▶ personal password
+                              │        └── "Use your password" ──▶ personal password
+                              └─▶ work or school password ──▶ approve sign in request
+                                                                    │
+                                        "I can't use my Authenticator app" ──▶ enter code
 ```
+
+The last two steps were saved from the live flow rather than written by hand
+(`legacy/app-auth-work.html`, `legacy/enter-code-work.html`), so they keep the ids their
+capture carries — including the ones on the shell around the background and the card.
 
 ## Commands
 

@@ -2,7 +2,8 @@ import fluent from '@/styles/fluent.module.css';
 import classic from '@/styles/classic.module.css';
 
 type Props = {
-  id: string;
+  /** omitted on the pages that were captured, where the note has no element */
+  id?: string;
   message: string | null;
   /** the two design systems size this line differently */
   family?: 'fluent' | 'classic';

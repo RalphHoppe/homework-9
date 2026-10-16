@@ -8,6 +8,8 @@ import { VerifyEmailPage } from '@/pages/VerifyEmailPage';
 import { EnterCodePage } from '@/pages/EnterCodePage';
 import { PasswordPage } from '@/pages/PasswordPage';
 import { WorkPasswordPage } from '@/pages/WorkPasswordPage';
+import { ApproveSignInPage } from '@/pages/ApproveSignInPage';
+import { EnterCodeWorkPage } from '@/pages/EnterCodeWorkPage';
 
 /**
  * The flow:
@@ -34,6 +36,8 @@ export function App() {
           <Route path={ROUTES.enterCode} element={<EnterCodePage />} />
           <Route path={ROUTES.password} element={<PasswordPage />} />
           <Route path={ROUTES.workPassword} element={<WorkPasswordPage />} />
+        <Route path={ROUTES.approveSignIn} element={<ApproveSignInPage />} />
+        <Route path={ROUTES.workEnterCode} element={<EnterCodeWorkPage />} />
           <Route path="*" element={<Navigate to={ROUTES.signIn} replace />} />
         </Routes>
       </SessionProvider>

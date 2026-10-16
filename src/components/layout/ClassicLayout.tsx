@@ -9,12 +9,22 @@ import { ClassicFooter } from '../common/ClassicFooter';
  * Frame for the old-style pages: a centred column over the background photo,
  * with the footer pinned to the bottom of the viewport.
  */
-export function ClassicLayout({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode;
+  /**
+   * The two work-account steps were captured from the live flow, and the
+   * capture carries ids the hand-written pages have no use for: the shell
+   * around the background, the card, and the footer.
+   */
+  captured?: boolean;
+};
+
+export function ClassicLayout({ children, captured = false }: Props) {
   useBodyFamily('classic');
 
   return (
     <div className={s.root}>
-      <BackgroundLayers />
+      <BackgroundLayers withIds={captured} />
 
       <div className={s.outer}>
         <div className={s.middle}>
@@ -24,7 +34,7 @@ export function ClassicLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <ClassicFooter />
+      <ClassicFooter withIds={captured} />
     </div>
   );
 }

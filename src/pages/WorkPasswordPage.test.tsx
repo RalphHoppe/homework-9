@@ -42,15 +42,13 @@ describe('WorkPasswordPage', () => {
     expect(document.getElementById('passwordError')).toHaveTextContent('');
   });
 
-  it('reports that nothing is checked or sent', async () => {
+  it('carries on to the Authenticator step', async () => {
     const user = userEvent.setup();
-    renderWork();
+    const { location } = renderWork();
 
     await user.type(screen.getByLabelText(/Enter the password/), 'hunter2');
     await user.click(screen.getByDisplayValue('Sign in'));
-    expect(document.getElementById('demoStatus')).toHaveTextContent(
-      'Demo only: no password is checked or sent anywhere.',
-    );
+    expect(location()).toBe('/approve-sign-in?email=anton5%40abv.bg');
   });
 
   it('has no show/hide button — the classic page has none', async () => {

@@ -13,7 +13,8 @@ import arrowLeft from '@/assets/arrow-left.svg';
 
 /**
  * The work or school password step — the old-style page that follows the
- * "Work or school account" tile.
+ * "Work or school account" tile. Unlike the personal password page it does not
+ * end the flow: a work account is asked for a second factor next.
  */
 export function WorkPasswordPage() {
   usePageTitle('Sign in to your account');
@@ -23,7 +24,6 @@ export function WorkPasswordPage() {
 
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [note, setNote] = useState<string | null>(null);
   const field = useRef<HTMLInputElement>(null);
 
   function submit(event: React.FormEvent) {
@@ -33,8 +33,10 @@ export function WorkPasswordPage() {
       field.current?.focus();
       return;
     }
+    // a work account does not stop at the password, it is asked for a second
+    // factor next
     setError(null);
-    setNote('Demo only: no password is checked or sent anywhere.');
+    go(ROUTES.approveSignIn);
   }
 
   return (
@@ -92,7 +94,7 @@ export function WorkPasswordPage() {
                   inputRef={field}
                 />
               </div>
-              <DemoNote id="demoStatus" message={note} family="classic" />
+              <DemoNote id="demoStatus" message={null} family="classic" />
             </div>
           </div>
 
