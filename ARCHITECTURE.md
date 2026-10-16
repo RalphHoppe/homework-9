@@ -28,6 +28,8 @@ main.tsx ─▶ App.tsx ─▶ pages/* ─▶ components/* ─▶ styles/*
 
 - `layout/` — `ClassicLayout` and `FluentLayout` render the background layers and the
   `outer / middle` skeleton of their look, and set `data-family`. Every page picks one.
+  Both wrap their content in `PageTransition`, which plays the animation the
+  reference pages play when the flow moves on (see below).
 - `brand/` — `MicrosoftLogo` (two sizes, one per look) and `icons.tsx` (the Fluent icon
   path data, copied from the captures — never redrawn).
 - `common/` — `IdentityBadge`, `IconButton` (back / close), `DemoNote`, and the two
@@ -41,6 +43,40 @@ main.tsx ─▶ App.tsx ─▶ pages/* ─▶ components/* ─▶ styles/*
 Each page is self-contained: it owns its own local form state, its own validation copy,
 and renders one layout. They share nothing but `flow/` and `components/`, which keeps a
 change to one step from moving another. Tests sit next to them as `*.test.tsx`.
+
+## Moving between steps
+
+`components/layout/PageTransition.tsx` plays the step-to-step animation, and the
+two families do it differently — both copied out of the captures:
+
+| | classic (`/`, `/pick-account`, `/work-password`) | Fluent (the other four) |
+| --- | --- | --- |
+| element | `.pagination-view` | `data-testid="routeAnimationFluent"` |
+| effect | slides 200px and fades in | fades in while the box changes height |
+| direction | in from the right going forward, from the left going back | none |
+| timing | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both` | `0.25s` fade, height `0.25s cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
+
+The direction travels with the navigation: `useFlowNavigation` compares the two
+steps in `STEP_ORDER` and puts the answer in the router location state, which
+`useFlowDirection` reads. Steps reached by a plain link or by loading the page
+carry no direction and slide in forward, the way the reference slides in its
+first view.
+
+Two deliberate differences from the reference, both noted in the component:
+
+- **The outgoing view is not animated.** The reference fades it out
+  (`hide-to-left` / `hide-to-right`) over the first half of the transition. This
+  app renders one step at a time, and holding two copies of a page would
+  duplicate every element id in the document — so the incoming view starts
+  immediately instead of after a 0.25s delay.
+- **The classic step slides as a whole.** The reference keeps the card still and
+  slides its contents, which needs a second containing block inside the card;
+  that would move the Next button, which is pinned to the card with
+  `position: absolute`.
+
+Height cannot be transitioned to `auto`, so the Fluent variant keeps the height
+the last step settled at in a ref and animates from there — measured in a layout
+effect, never during render.
 
 ## Styling
 

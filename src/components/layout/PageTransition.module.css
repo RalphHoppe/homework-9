@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Moving from one step to the next.
+
+   Every value here is copied out of the reference captures:
+     · classic pages ship `.pagination-view` + `.animate` + the four
+       slide keyframes, and animate `left` by 200px over a quarter of a second
+       with cubic-bezier(.5, 0, .5, 1);
+     · Fluent pages ship a `routeAnimationFluent` box that fades the new view
+       in over 0.25s while its height transitions with
+       --curveDecelerateMax = cubic-bezier(0.1, 0.9, 0.2, 1).
+
+   The reference also defines `hide-to-left` / `hide-to-right`, which animate
+   the view that is being left. Those are not used: this app renders one step at
+   a time, so there is no outgoing view to animate (and holding two copies of a
+   page would duplicate every element id in the document).
+   ========================================================================== */
+
+/* ── Classic: the view slides in ─────────────────────────────────────────── */
+
+.classic {
+  position: relative; /* `left` needs something to move against */
+  width: 100%;
+}
+
+.animate {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+  animation-fill-mode: both;
+  transition-property: left;
+}
+
+.slide-in-next {
+  animation-name: show-from-right;
+}
+
+.slide-in-back {
+  animation-name: show-from-left;
+}
+
+@keyframes show-from-right {
+  from {
+    left: 200px;
+    opacity: 0;
+  }
+  to {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes show-from-left {
+  from {
+    left: -200px;
+    opacity: 0;
+  }
+  to {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+/* ── Fluent: the view fades in, the box changes height ───────────────────── */
+
+.fluent {
+  transition: height 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.fade {
+  animation: fade-in 0.25s ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Nothing moves for people who asked for no motion ────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate,
+  .fade {
+    animation: none;
+  }
+
+  .fluent {
+    transition: none;
+  }
+}

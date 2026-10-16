@@ -20,6 +20,10 @@ trust it.
 `src/test/fidelity.test.tsx` is the guard on the whole idea: it renders every step and
 compares its element ids, copy and title against the HTML page it replaced.
 
+Moving from one step to the next is animated the way the reference animates it — the
+classic steps slide 200px and fade in, the Fluent steps fade in while their box changes
+height. `ARCHITECTURE.md` has the numbers.
+
 The account name is carried along the flow as `?email=…` (and remembered in
 `localStorage` under `msft-demo-email`), so every step can show the same identity the
 real pages show. An unknown route goes back to `/`.
