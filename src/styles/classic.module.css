@@ -1,0 +1,651 @@
+/* ==========================================================================
+   Classic design system — sign in, account picker, work password
+
+   Ported verbatim from the stylesheets of the reference captures — no value
+   was changed. Every rule is scoped under `.root`, which the matching layout
+   component puts on its outermost element, so the classic and Fluent families
+   can never bleed into one another.
+   ========================================================================== */
+/* ── Outer layout ── */
+.root .outer {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.root .middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.root .flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Sign-in box ── */
+.root .sign-in-box {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  max-width: 440px;
+  width: calc(100% - 40px);
+  padding: 44px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  min-width: 320px;
+  min-height: 338px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* ── Logo ── */
+.root .logo {
+  max-width: 256px;
+  height: 24px;
+  display: block;
+}
+
+/* ── Title ── */
+.root .title {
+  line-height: 1.75rem;
+  color: #1b1b1b;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  font-family: 'Segoe UI', 'Helvetica Neue', 'Lucida Grande', 'Roboto', sans-serif;
+}
+
+/* ── Form group ── */
+.root .form-group {
+  margin-bottom: 16px;
+}
+
+/* ── Input ── */
+.root input[type='email'] {
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  max-width: 100%;
+  line-height: inherit;
+  background-image: none;
+  background-color: transparent;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.6);
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  padding: 6px 10px 6px 0;
+  outline: none;
+}
+
+.root input[type='email']:hover {
+  border-color: rgba(0, 0, 0, 0.8);
+}
+
+.root input[type='email']:focus {
+  border-color: #0067b8;
+  background-color: transparent;
+}
+
+.root input[type='email'].has-error {
+  border-color: #e81123;
+}
+
+.root input[type='email'].has-error:focus {
+  border-color: #e81123;
+}
+
+.root input[type='email']::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.root input[type='email']::-moz-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  opacity: 1;
+}
+
+.root input[type='email']:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* ── Error message ── */
+.root .errorMessage {
+  display: none;
+  color: #e81123;
+  font-size: 0.9375rem;
+  margin-top: 4px;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.root .errorMessage.visible {
+  display: block;
+}
+
+/* ── Alert (screen reader) ── */
+.root .alertRegion {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ── Links ── */
+.root a {
+  color: #0067b8;
+  text-decoration: none;
+}
+
+.root a:link {
+  color: #0067b8;
+}
+
+.root a:visited {
+  color: #0067b8;
+}
+
+.root a:hover {
+  color: #666;
+  text-decoration: underline;
+}
+
+.root a:focus {
+  color: #0067b8;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.root a:active {
+  color: #999;
+}
+
+/* ── Small text ── */
+.root .text-13 {
+  font-size: 0.8125rem;
+}
+
+/* ── Button positioning ── */
+.root .position-buttons > div:first-child {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 36px;
+}
+
+.root .button-container {
+  position: absolute;
+  bottom: 44px;
+  right: 44px;
+  text-align: right;
+}
+
+/* ── Next button ── */
+.root input[type='submit'] {
+  color: #fff;
+  background-color: #0067b8;
+  border: none;
+  min-height: 32px;
+  min-width: 108px;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  touch-action: manipulation;
+  -webkit-appearance: button;
+  display: inline-block;
+}
+
+.root input[type='submit'].primary:hover {
+  background-color: #005da6;
+}
+
+.root input[type='submit'].primary:focus {
+  background-color: #005da6;
+  text-decoration: underline;
+  outline: 2px solid #000;
+}
+
+.root input[type='submit'].primary:active {
+  outline: none;
+  text-decoration: none;
+  transform: scale(0.98);
+}
+
+/* ── Promoted fed cred box (Sign-in options) ── */
+.root .promoted-fed-cred-box {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  max-width: 440px;
+  width: calc(100% - 40px);
+  margin-bottom: 28px;
+  min-width: 320px;
+  padding: 0;
+}
+
+.root .promoted-fed-cred-content {
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+/* ── Tile ── */
+.root .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.root .row::before,
+.root .row::after {
+  content: ' ';
+  display: table;
+}
+
+.root .row::after {
+  clear: both;
+}
+
+.root .row.tile {
+  margin-bottom: 0;
+  outline: none;
+  color: inherit;
+  display: block;
+  margin-left: -44px;
+  margin-right: -44px;
+  cursor: pointer;
+}
+
+.root .row.tile:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.root .row.tile:active {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.root .row.tile:focus {
+  background-color: rgba(0, 0, 0, 0.1);
+  outline: #000 dashed 1px;
+}
+
+.root .row.tile .table {
+  padding: 7px 44px;
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+}
+
+.root .table-row {
+  display: table-row;
+}
+
+.root .table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.root .table-cell:first-child + .table-cell {
+  width: 100%;
+}
+
+.root .tile-img.medium {
+  width: 32px;
+  height: 32px;
+}
+
+.root .text-left {
+  text-align: left;
+}
+
+.root .content {
+  line-height: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* ── Footer ── */
+.root .footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 99;
+  clear: both;
+  min-height: 28px;
+}
+
+.root .footerNode {
+  margin: 0;
+  float: right;
+}
+
+.root .footer-content.footer-item {
+  color: #000;
+  font-size: 12px;
+  line-height: 28px;
+  white-space: nowrap;
+  display: inline-block;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.root .footer-content.footer-item.debug-item {
+  text-decoration: none;
+  letter-spacing: 3px;
+  line-height: 22px;
+  vertical-align: top;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.root .footer-content.footer-item:hover {
+  text-decoration: underline;
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px), (max-height: 366px) {
+  .root .middle {
+    vertical-align: top;
+  }
+
+  .root .sign-in-box {
+    padding: 24px;
+    margin-top: 0;
+    width: 100vw;
+    box-shadow: none;
+    border: 0;
+    margin-bottom: 0;
+  }
+
+  .root .promoted-fed-cred-box {
+    margin-top: 0;
+    margin-bottom: 88px;
+    width: 100vw;
+    padding: 0 24px;
+  }
+
+  .root .promoted-fed-cred-content {
+    box-shadow: none;
+    padding-left: 24px;
+    padding-right: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .root .row.tile {
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .root .row.tile .table {
+    padding: 5px 5px;
+  }
+
+  .root .footer {
+    background-color: #fff;
+  }
+
+  .root .footerNode {
+    float: left;
+    margin: 0 24px !important;
+  }
+
+  .root .footer-content.footer-item {
+    color: #747474;
+  }
+
+  .root .button-container {
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+/* ── Account picker ─────────────────────────────────────────────────── */
+/* the explanation sits where the usual heading would be */
+.root .text-body {
+  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  color: #1b1b1b;
+  padding: 0;
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
+/* the 48×48 account icons need more room than the 32×32 options tile */
+.root .row.tile .table {
+  padding: 12px 44px;
+}
+
+.root .tile-img {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.root img.tile-img {
+  display: block;
+}
+
+.root .row.tile .table:focus {
+  outline: #000 dashed 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.root .row.tile .content > * {
+  word-wrap: break-word;
+}
+
+.root .row.tile .content small {
+  font-size: 80%;
+}
+
+/* Back · Next, pinned to the bottom of the card */
+.root .win-button-pin-bottom {
+  position: absolute;
+  bottom: 44px;
+  left: 44px;
+  right: 44px;
+}
+
+.root .button-field-container {
+  display: flex;
+  align-items: center;
+}
+
+.root input[type='button'] {
+  color: #000;
+  background-color: #e6e6e6;
+  border: none;
+  min-height: 32px;
+  min-width: 108px;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  touch-action: manipulation;
+  -webkit-appearance: button;
+  display: inline-block;
+}
+
+.root input[type='button']:hover {
+  background-color: #b2b2b2;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.root input[type='button']:focus {
+  background-color: #b2b2b2;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-decoration: underline;
+  outline: 2px solid #000;
+}
+
+.root input[type='button']:active {
+  outline: none;
+  text-decoration: none;
+  transform: scale(0.98);
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px), (max-height: 366px) {
+  .root .row.tile .table {
+    padding: 12px 24px;
+  }
+
+  .root .win-button-pin-bottom {
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+  }
+}
+
+/* ── Work or school password step ────────────────────────────────────── */
+/* identity banner: back arrow + the account being signed in to */
+.root .identityBanner {
+  height: 24px;
+  background: #fff;
+  margin-top: 16px;
+  margin-bottom: -4px;
+}
+
+.root .backButton {
+  min-height: 24px;
+  width: 24px;
+  min-width: 24px;
+  float: left;
+  padding: 0;
+  background-color: #fff;
+  border-width: 0;
+  border-radius: 12px;
+  margin-right: 2px;
+  cursor: pointer;
+}
+
+.root .backButton:hover {
+  background-color: #e6e6e6;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.root .backButton:focus {
+  background-color: #e6e6e6;
+  background-color: rgba(0, 0, 0, 0.1);
+  outline: 2px solid #000;
+}
+
+.root .backButton:active {
+  background-color: #b3b3b3;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.root .backButton img {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.root .identity {
+  line-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* password field — same underline field as the sign-in page */
+.root .placeholderContainer {
+  position: relative;
+  width: 100%;
+}
+
+.root input[type='password'] {
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  max-width: 100%;
+  line-height: inherit;
+  background-image: none;
+  background-color: transparent;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.6);
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  padding: 6px 10px 6px 0;
+  outline: none;
+}
+
+.root input[type='password']:hover {
+  border-color: rgba(0, 0, 0, 0.8);
+}
+
+.root input[type='password']:focus {
+  border-color: #0067b8;
+  background-color: transparent;
+}
+
+.root input[type='password'].has-error {
+  border-color: #e81123;
+}
+
+.root input[type='password'].has-error:focus {
+  border-color: #e81123;
+}
+
+.root input[type='password']::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.root input[type='password']::-moz-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  opacity: 1;
+}
+
+.root input[type='password']:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* error message — empty until you press Sign in */
+
+/* demo note, only after a submit */
+.root .demo-status {
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.root .demo-status[hidden] {
+  display: none;
+}
+
+.root .password-reset-links-container > div > .row {
+  margin-bottom: 0;
+}

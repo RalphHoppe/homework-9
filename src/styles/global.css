@@ -1,0 +1,111 @@
+/* ==========================================================================
+   Global baseline — design tokens, reset, page background.
+
+   Everything here is shared by both design systems (classic and Fluent).
+   The body typography differs between the two families, so each layout sets
+   data-family="classic" | "fluent" on <body> and picks its own rules.
+   ========================================================================== */
+
+:root {
+  /* Fluent tokens (light theme), straight from the reference captures */
+  --colorNeutralForeground1: #242424;
+  --colorNeutralForeground2: #424242;
+  --colorNeutralForeground3: #616161;
+  --colorNeutralForeground4: #707070;
+  --colorNeutralBackground1: #ffffff;
+  --colorNeutralStroke1: #d1d1d1;
+  --colorNeutralStroke1Hover: #c7c7c7;
+  --colorNeutralStroke2: #e0e0e0;
+  --colorNeutralStrokeAccessible: #616161;
+  --colorBrandBackground: #0f6cbd;
+  --colorBrandBackgroundHover: #115ea3;
+  --colorBrandBackgroundPressed: #0c3b5e;
+  --colorBrandForegroundLink: #115ea3;
+  --colorBrandForegroundLinkHover: #0f548c;
+  --colorBrandForegroundLinkPressed: #0c3b5e;
+  --colorBrandStroke1: #0f6cbd;
+  --colorStatusDangerBorderActive: #c50f1f;
+  --colorPaletteRedForeground1: #bc2f32;
+
+  --borderRadiusMedium: 4px;
+  --borderRadiusLarge: 6px;
+  --borderRadiusXLarge: 12px;
+  --borderRadiusCircular: 10000px;
+
+  --shadow4: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
+  --shadow28: 0 0 8px rgba(0, 0, 0, 0.12), 0 14px 28px rgba(0, 0, 0, 0.14);
+
+  --fontFamilyBase:
+    'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto,
+    'Helvetica Neue', sans-serif;
+
+  /* Classic pages ship their own, much longer, font stack */
+  --fontFamilyClassic:
+    'Segoe UI', -apple-system, 'Helvetica Neue', 'Lucida Grande', Roboto, 'Ebrima', 'Nirmala UI',
+    'Gadugi', 'Segoe Xbox Symbol', 'Segoe UI Symbol', 'Meiryo UI', 'Khmer UI', 'Tunga', 'Lao UI',
+    'Raavi', 'Iskoola Pota', 'Latha', 'Leelawadee', 'Microsoft YaHei UI', 'Microsoft JhengHei UI',
+    'Malgun Gothic', 'Estrangelo Edessa', 'Microsoft Himalaya', 'Microsoft New Tai Lue',
+    'Microsoft PhagsPa', 'Microsoft Tai Le', 'Microsoft Yi Baiti', 'Mongolian Baiti', 'MV Boli',
+    'Myanmar Text', 'Cambria Math';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-size: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.25rem;
+  background-color: #f2f2f2;
+  direction: ltr;
+}
+
+body[data-family='classic'] {
+  font-family: var(--fontFamilyClassic);
+  font-size: 0.9375rem; /* 15px */
+  color: #1b1b1b;
+}
+
+body[data-family='fluent'] {
+  font-family: var(--fontFamilyBase);
+  font-size: 0.875rem; /* 14px */
+  color: var(--colorNeutralForeground1);
+}
+
+/* ── Background photo, shared by every step ─────────────────────────────── */
+
+.app-background-holder,
+.app-background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f2f2f2;
+}
+
+.app-background-image {
+  background-image: url('../assets/background.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

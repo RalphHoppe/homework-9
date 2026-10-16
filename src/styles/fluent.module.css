@@ -1,0 +1,487 @@
+/* ==========================================================================
+   Fluent design system — get a code, verify email, enter code, password
+
+   Ported verbatim from the stylesheets of the reference captures — no value
+   was changed. Every rule is scoped under `.root`, which the matching layout
+   component puts on its outermost element, so the classic and Fluent families
+   can never bleed into one another.
+   ========================================================================== */
+/* ── Page layout ────────────────────────────────────────────────────────── */
+/* Full-viewport column: card is centred, footer is pinned to the bottom,
+   exactly like the real page (#outer > #middle + footer). */
+.root .outer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.root .middle {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+}
+
+.root .stack {
+  width: 100%;
+  max-width: 440px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.root .card {
+  background-color: var(--colorNeutralBackground1);
+  border-radius: var(--borderRadiusXLarge);
+  box-shadow: var(--shadow28);
+  padding: 40px;
+}
+
+/* ── Banner row: [back / dismiss] [Microsoft logo] ───────────────────────── */
+.root .banner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.root .banner-start {
+  justify-self: start;
+}
+
+.root .banner-end {
+  justify-self: end;
+}
+
+.root .logo {
+  justify-self: center;
+  height: 24px;
+  width: auto;
+  display: block;
+}
+
+/* Square icon button (back arrow / dismiss), like Fluent's subtle button */
+.root .icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--borderRadiusMedium);
+  background-color: transparent;
+  color: var(--colorNeutralForeground3);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.root .icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.root .icon-button:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.root .icon-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+.root .icon-button svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  display: block;
+}
+
+/* ── Identity badge (the account chip) ──────────────────────────────────── */
+.root .badge-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.root .identity-badge {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--colorNeutralStroke2);
+  border-radius: var(--borderRadiusCircular);
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground3);
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Title + subtitle ───────────────────────────────────────────────────── */
+.root .title {
+  margin: 0 0 12px;
+  font-size: 1.5rem; /* 24px — matches the reference (ink 24px tall) */
+  line-height: 2rem; /* 32px */
+  font-weight: 600;
+  text-align: center;
+  color: var(--colorNeutralForeground1);
+}
+
+.root .subtitle {
+  margin: 0;
+  text-align: center;
+  color: var(--colorNeutralForeground1);
+}
+
+.root .subtitle .email {
+  font-weight: 600;
+}
+
+/* ── Text field (Fluent outlined input with a floating label) ────────────── */
+/* 12px heading margin + 32px here = the 33px gap measured in the reference */
+.root .field {
+  margin: 32px 0 0;
+}
+
+.root .input-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 8px;
+  background-color: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke1);
+  border-bottom-color: var(--colorNeutralStrokeAccessible);
+  border-radius: var(--borderRadiusMedium);
+  transition: border-color 0.1s ease-in-out;
+}
+
+.root .input-shell:hover {
+  border-color: var(--colorNeutralStroke1Hover);
+}
+
+.root .input-shell:focus-within {
+  border-color: var(--colorBrandStroke1);
+  border-bottom-width: 2px;
+}
+
+.root .input-shell.has-error {
+  border-color: var(--colorStatusDangerBorderActive);
+}
+
+/* Empty: the label acts as the placeholder, vertically centred and lined up
+   with where the typed text will appear (8px in from the edge). */
+.root .input-label {
+  position: absolute;
+  left: 4px;
+  max-width: calc(100% - 8px);
+  padding: 0 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--colorNeutralForeground4);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    font-size 0.1s ease-in-out,
+    top 0.1s ease-in-out,
+    transform 0.1s ease-in-out;
+}
+
+/* Filled / focused: it shrinks to 10px and rides up onto the top border,
+   with a white background notching the border behind it — the Fluent
+   outlined-input look. The value itself stays centred in the field. */
+.root .input-shell.is-floating .input-label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.625rem; /* 10px */
+  line-height: 0.875rem; /* 14px */
+  background-color: var(--colorNeutralBackground1);
+}
+
+/* The typed value stays vertically centred in the field, like the real page. */
+.root .input-shell input {
+  width: 100%;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Eye toggle inside the field — only shown once something is typed */
+.root .show-button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--borderRadiusMedium);
+  background: transparent;
+  color: var(--colorNeutralForeground3);
+  cursor: pointer;
+}
+
+.root .show-button:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  color: var(--colorNeutralForeground2);
+}
+
+.root .show-button:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.root .show-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+}
+
+.root .show-button svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  fill: currentColor;
+}
+
+.root .show-button[hidden],
+.root .show-button svg[hidden] {
+  display: none;
+}
+
+/* ── Validation message ─────────────────────────────────────────────────── */
+.root .validation-message {
+  display: none;
+  position: relative;
+  margin: 2px 0 0;
+  padding-left: 16px;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  color: var(--colorPaletteRedForeground1);
+}
+
+.root .validation-message.is-visible {
+  display: block;
+}
+
+.root .validation-message .validation-icon {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+/* ── One-time-code entry (six 40x40 boxes, 8px apart, centred) ───────────── */
+.root .code-field {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 24px;
+}
+
+.root .code-entry {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+  min-width: 0;
+}
+
+.root .code-entry input {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  font-family: inherit;
+  font-size: 1.5rem; /* 24px, semibold — as in the reference */
+  font-weight: 600;
+  line-height: 1.375rem;
+  text-align: center;
+  outline: none;
+}
+
+.root .code-entry input:hover {
+  border-color: var(--colorNeutralStroke1Hover);
+}
+
+.root .code-entry input:focus {
+  border-color: var(--colorBrandStroke1);
+  border-width: 2px;
+}
+
+/* ── Actions: primary button + secondary link ───────────────────────────── */
+.root .actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding-top: 32px;
+}
+
+.root .primary-button {
+  width: 100%;
+  min-height: 32px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--borderRadiusMedium);
+  background-color: var(--colorBrandBackground);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  cursor: pointer;
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.root .primary-button:hover {
+  background-color: var(--colorBrandBackgroundHover);
+}
+
+.root .primary-button:active {
+  background-color: var(--colorBrandBackgroundPressed);
+}
+
+.root .primary-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+.root .view-footer {
+  padding-top: 32px;
+  text-align: center;
+}
+
+/* "Send a code to …" / "Use your password" render semibold on the real page */
+.root .view-footer .link {
+  font-weight: 600;
+}
+
+/* ── Links ──────────────────────────────────────────────────────────────── */
+.root .link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--colorBrandForegroundLink);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.root .link:hover {
+  color: var(--colorBrandForegroundLinkHover);
+  text-decoration: underline;
+}
+
+.root .link:active {
+  color: var(--colorBrandForegroundLinkPressed);
+  text-decoration: underline;
+}
+
+.root .link:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+}
+
+/* ── Footer (Help and feedback · Terms of use · Privacy and cookies) ─────── */
+/*    Pinned to the bottom of the viewport, as wide as the card and sitting
+      straight on the page background (no panel behind it), #424242 links.   */
+.root .footer {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  min-height: 24px;
+  padding: 12px 16px;
+  color: var(--colorNeutralForeground2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.root .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  row-gap: 8px;
+}
+
+.root .footer-links .link {
+  color: var(--colorNeutralForeground2);
+  font-size: 0.75rem; /* 12px — the reference renders these at 12px */
+  line-height: 1rem; /* 16px */
+}
+
+.root .footer-note {
+  margin: 6px 0 0;
+  font-size: 0.625rem; /* 10px, like the real page */
+  line-height: 0.875rem; /* 14px */
+  color: inherit;
+  text-align: center;
+}
+
+/* "Learn more" keeps the note's 10px size, but is semibold */
+.root .footer-note .link {
+  font-size: inherit;
+  font-weight: 600;
+}
+
+/* ── Demo status line (this is a mockup — nothing is really sent) ────────── */
+.root .demo-status {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--colorNeutralForeground3);
+}
+
+.root .demo-status[hidden] {
+  display: none;
+}
+
+/* ── Small screens: drop the photo, go edge-to-edge ─────────────────────── */
+@media (max-width: 600px), (max-height: 480px) {
+  .root .middle {
+    padding: 0;
+  }
+
+  .root .card {
+    padding: 24px;
+    border-radius: 0;
+    box-shadow: none;
+    min-width: 0;
+  }
+}

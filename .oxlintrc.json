@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "unicorn", "typescript", "oxc"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn",
+    "pedantic": "off"
+  },
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "settings": {
+    "jsx-a11y": {}
+  },
+  "rules": {
+    "react/jsx-key": "error",
+    "react/react-in-jsx-scope": "off",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true,
+          "pascalCase": true,
+          "kebabCase": false
+        }
+      }
+    ]
+  },
+  "ignorePatterns": ["dist", "coverage", "node_modules", "legacy"]
+}

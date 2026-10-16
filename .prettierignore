@@ -1,0 +1,7 @@
+dist
+coverage
+node_modules
+legacy
+package-lock.json
+mockup-downloaded -by-single-file
+screenshots
