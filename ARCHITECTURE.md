@@ -50,11 +50,13 @@ change to one step from moving another. Tests sit next to them as `*.test.tsx`.
 ## Moving between steps
 
 `components/layout/PageTransition.tsx` plays the step-to-step animation, and the
-two families do it differently — both copied out of the captures:
+two families do it differently — both copied out of the captures. A classic page
+keeps its card still and slides what is **inside** it (`SlideIn`); a Fluent page
+wraps the whole step (`PageTransition`):
 
 |           | classic (`/`, `/pick-account`, `/work-password`, `/approve-sign-in`, `/work-enter-code`) | Fluent (the other four)                                                             |
 | --------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| element   | `.pagination-view`                                                                       | `data-testid="routeAnimationFluent"`                                                |
+| element   | the contents of the card, and the buttons pinned to it                                   | `data-testid="routeAnimationFluent"`                                                |
 | effect    | slides 200px and fades in                                                                | fades in while the box changes height                                               |
 | direction | in from the right going forward, from the left going back                                | none                                                                                |
 | timing    | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both`                          | `0.25s` fade, height `0.25s cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
@@ -65,17 +67,18 @@ steps in `STEP_ORDER` and puts the answer in the router location state, which
 carry no direction and slide in forward, the way the reference slides in its
 first view.
 
-Two deliberate differences from the reference, both noted in the component:
+The classic slide is `transform`, where the reference animates `left`: the row of
+buttons pinned to the card is placed with `left`, and an animation on the same
+property would leave it moved once it settled. The logo is left out of the slide,
+the way the captures leave it out of `.pagination-view`.
+
+One deliberate difference from the reference, noted in the component:
 
 - **The outgoing view is not animated.** The reference fades it out
   (`hide-to-left` / `hide-to-right`) over the first half of the transition. This
   app renders one step at a time, and holding two copies of a page would
   duplicate every element id in the document — so the incoming view starts
   immediately instead of after a 0.25s delay.
-- **The classic step slides as a whole.** The reference keeps the card still and
-  slides its contents, which needs a second containing block inside the card;
-  that would move the Next button, which is pinned to the card with
-  `position: absolute`.
 
 Height cannot be transitioned to `auto`, so the Fluent variant keeps the height
 the last step settled at in a ref and animates from there — measured in a layout

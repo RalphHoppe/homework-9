@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import s from '@/styles/classic.module.css';
 import { ClassicLayout } from '@/components/layout/ClassicLayout';
+import { SlideIn } from '@/components/layout/PageTransition';
 import { MicrosoftLogo } from '@/components/brand/MicrosoftLogo';
 import { UnderlineField } from '@/components/fields/UnderlineField';
 import { InlineError } from '@/components/fields/InlineError';
@@ -40,72 +41,75 @@ export function SignInPage() {
       <div className={s['sign-in-box']}>
         <MicrosoftLogo family="classic" className={s.logo} />
 
-        <div className={s.title} id="loginHeader" role="heading" aria-level={1}>
-          Sign in
-        </div>
+        {/* the card stays where it is, what is inside it slides */}
+        <SlideIn>
+          <div className={s.title} id="loginHeader" role="heading" aria-level={1}>
+            Sign in
+          </div>
 
-        {/* the reference keeps a hidden live region mirroring the error */}
-        <div
-          id="alertRegion"
-          className={s.alertRegion}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          {error}
-        </div>
+          {/* the reference keeps a hidden live region mirroring the error */}
+          <div
+            id="alertRegion"
+            className={s.alertRegion}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            {error}
+          </div>
 
-        <InlineError id="usernameError" message={error} />
+          <InlineError id="usernameError" message={error} />
 
-        <div className={s['form-group']} id="emailFormGroup">
-          <UnderlineField
-            id="i0116"
-            type="email"
-            value={value}
-            onChange={(next) => {
-              setValue(next);
-              if (error) setError(null);
-            }}
-            placeholder="Email, phone, or Skype"
-            autoComplete="username"
-            ariaLabel="Enter your email, phone, or Skype."
-            describedBy="usernameError loginHeader"
-            invalid={Boolean(error)}
-            maxLength={113}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') submit();
-            }}
-          />
-        </div>
+          <div className={s['form-group']} id="emailFormGroup">
+            <UnderlineField
+              id="i0116"
+              type="email"
+              value={value}
+              onChange={(next) => {
+                setValue(next);
+                if (error) setError(null);
+              }}
+              placeholder="Email, phone, or Skype"
+              autoComplete="username"
+              ariaLabel="Enter your email, phone, or Skype."
+              describedBy="usernameError loginHeader"
+              invalid={Boolean(error)}
+              maxLength={113}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') submit();
+              }}
+            />
+          </div>
 
-        <div className={s['position-buttons']}>
-          <div>
-            <div className={s['text-13']}>
-              <div className={s['form-group']}>
-                No account?{' '}
-                <a
-                  href="https://signup.live.com"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label="Create a Microsoft account"
-                >
-                  Create one!
-                </a>
-              </div>
-              <div className={s['form-group']}>
-                <a
-                  href="https://account.live.com/ResetPassword.aspx"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  Can&apos;t access your account?
-                </a>
+          <div className={s['position-buttons']}>
+            <div>
+              <div className={s['text-13']}>
+                <div className={s['form-group']}>
+                  No account?{' '}
+                  <a
+                    href="https://signup.live.com"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label="Create a Microsoft account"
+                  >
+                    Create one!
+                  </a>
+                </div>
+                <div className={s['form-group']}>
+                  <a
+                    href="https://account.live.com/ResetPassword.aspx"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Can&apos;t access your account?
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </SlideIn>
 
-        <div className={s['button-container']}>
+        <SlideIn className={s['button-container']}>
           <input
             type="submit"
             id="idSIButton9"
@@ -113,7 +117,7 @@ export function SignInPage() {
             value="Next"
             onClick={submit}
           />
-        </div>
+        </SlideIn>
       </div>
 
       {/* "Sign-in options" — the second card the real page shows */}

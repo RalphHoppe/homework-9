@@ -81,7 +81,7 @@
 /* ── Nothing moves for people who asked for no motion ────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .animate,
+  .slide,
   .fade {
     animation: none;
   }

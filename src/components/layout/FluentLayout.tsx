@@ -20,7 +20,7 @@ export function FluentLayout({ children }: { children: ReactNode }) {
         <div className={s.middle}>
           <div className={s.stack}>
             <div className={s.card}>
-              <PageTransition family="fluent">{children}</PageTransition>
+              <PageTransition>{children}</PageTransition>
             </div>
             <FluentFooter />
           </div>

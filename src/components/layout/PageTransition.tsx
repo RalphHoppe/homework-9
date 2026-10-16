@@ -4,39 +4,34 @@ import { cx } from '@/utils/cx';
 import { useFlowDirection } from '@/flow/direction';
 import s from './PageTransition.module.css';
 
-type Family = 'classic' | 'fluent';
-
 /** Long enough for the 0.25s height transition, plus a little slack. */
 const HEIGHT_TIMEOUT = 400;
 
 /**
- * The animation the reference pages play when the flow moves to another step.
- *
- * The two families do it differently, and both are copied from the captures:
- *
- * - classic pages wrap their view in `.pagination-view` and slide it 200px,
- *   in from the right when moving forward and in from the left when going back.
- *   Here the step slides as a whole: the reference keeps the card still and
- *   slides what is inside it, which needs a second containing block inside the
- *   card — and that would move the Next button, which is pinned to the card's
- *   bottom right corner with `position: absolute`.
- * - Fluent pages (`data-testid="routeAnimationFluent"`) fade the new view in
- *   while the box around it animates from the old height to the new one.
+ * Fluent: the view fades in while the box around it animates from the old
+ * height to the new one, the way `data-testid="routeAnimationFluent"` does it
+ * in the captures.
  *
  * The outgoing view is not animated: this app renders one step at a time, so
  * there is no outgoing view left — and holding two copies of a page would
  * duplicate every element id in the document.
  */
-export function PageTransition({ family, children }: { family: Family; children: ReactNode }) {
-  return family === 'classic' ? (
-    <ClassicSlide>{children}</ClassicSlide>
-  ) : (
-    <FluentFade>{children}</FluentFade>
-  );
+export function PageTransition({ children }: { children: ReactNode }) {
+  return <FluentFade>{children}</FluentFade>;
 }
 
-/** Classic: the view slides in and fades up, 200px over a quarter of a second. */
-function ClassicSlide({ children }: { children: ReactNode }) {
+/**
+ * Classic: what is inside the card slides in and fades up, 200px over a
+ * quarter of a second — in from the right when the flow moves on, in from the
+ * left when it goes back. The card itself stays where it is: in the captures
+ * only `.pagination-view` and the buttons pinned to the card carry the
+ * animation.
+ *
+ * It slides with `transform`, not with the `left` the reference animates:
+ * the pinned buttons are placed with `left`, and an animation on the same
+ * property would move them for good once it settled.
+ */
+export function SlideIn({ className, children }: { className?: string; children: ReactNode }) {
   const { pathname } = useLocation();
   const direction = useFlowDirection();
 
@@ -45,10 +40,9 @@ function ClassicSlide({ children }: { children: ReactNode }) {
       // A fresh element per step, so the animation starts over every time.
       key={pathname}
       className={cx(
-        s.classic,
-        s.animate,
-        direction === 'next' && s['slide-in-next'],
-        direction === 'back' && s['slide-in-back'],
+        s.slide,
+        direction === 'back' ? s['slide-in-back'] : s['slide-in-next'],
+        className,
       )}
     >
       {children}
