@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { StepBody } from '@/components/layout/StepBody';
 import s from '@/styles/fluent.module.css';
 import { IdentityBadge } from '@/components/common/IdentityBadge';
 import { DemoNote } from '@/components/common/DemoNote';
@@ -33,50 +34,53 @@ export function PasswordStep() {
 
   return (
     <>
-      <IdentityBadge account={account} />
+      <StepBody>
+        <IdentityBadge account={account} />
 
-      <h1 className={s.title} id="loginHeader">
-        Enter your password
-      </h1>
+        <h1 className={s.title} id="loginHeader">
+          Enter your password
+        </h1>
 
-      <form id="passwordForm" noValidate onSubmit={submit}>
-        <FluentTextField
-          id="passwordEntry"
-          shellId="inputShell"
-          revealButtonId="showButton"
-          eyeIconId="eyeIcon"
-          eyeOffIconId="eyeOffIcon"
-          label="Password"
-          type="password"
-          value={password}
-          autoComplete="current-password"
-          autoFocus
-          revealable
-          describedBy="passwordError"
-          invalid={Boolean(error)}
-          onChange={(next) => {
-            setPassword(next);
-            if (error) setError(null);
-          }}
-        />
+        <form id="passwordForm" noValidate onSubmit={submit}>
+          <FluentTextField
+            id="passwordEntry"
+            shellId="inputShell"
+            revealButtonId="showButton"
+            eyeIconId="eyeIcon"
+            eyeOffIconId="eyeOffIcon"
+            label="Password"
+            type="password"
+            value={password}
+            autoComplete="current-password"
+            autoFocus
+            revealable
+            describedBy="passwordError"
+            invalid={Boolean(error)}
+            onChange={(next) => {
+              setPassword(next);
+              if (error) setError(null);
+            }}
+          />
 
-        <ValidationMessage id="passwordError" textId="passwordErrorText" visible={Boolean(error)}>
-          {error ?? "You've tried to sign in too many times with an incorrect account or password."}
-        </ValidationMessage>
+          <ValidationMessage id="passwordError" textId="passwordErrorText" visible={Boolean(error)}>
+            {error ??
+              "You've tried to sign in too many times with an incorrect account or password."}
+          </ValidationMessage>
 
-        <div className={s.actions}>
-          <button type="submit" className={s['primary-button']} id="idSIButton9">
-            Next
-          </button>
-          <DemoNote id="demoStatus" message={note} />
+          <div className={s.actions}>
+            <button type="submit" className={s['primary-button']} id="idSIButton9">
+              Next
+            </button>
+            <DemoNote id="demoStatus" message={note} />
+          </div>
+        </form>
+
+        <div className={s['view-footer']}>
+          <a className={s.link} href={href(ROUTES.getACode)} id="sendCodeLink">
+            Send a code to {account}
+          </a>
         </div>
-      </form>
-
-      <div className={s['view-footer']}>
-        <a className={s.link} href={href(ROUTES.getACode)} id="sendCodeLink">
-          Send a code to {account}
-        </a>
-      </div>
+      </StepBody>
     </>
   );
 }

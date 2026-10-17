@@ -1,3 +1,4 @@
+import { StepBody } from '@/components/layout/StepBody';
 import s from '@/styles/classic.module.css';
 import { useSession } from '@/flow/SessionProvider';
 import { usePageTitle } from '@/flow/usePageTitle';
@@ -65,68 +66,69 @@ export function PickAccountStep() {
 
   return (
     <>
-      <div className={`${s.row} ${s['text-body']}`}>
-        <div id="loginDescription">
-          It looks like this email is used with more than one account from Microsoft. Which one do
-          you want to use?
+      <StepBody>
+        <div className={`${s.row} ${s['text-body']}`}>
+          <div id="loginDescription">
+            It looks like this email is used with more than one account from Microsoft. Which one do
+            you want to use?
+          </div>
         </div>
-      </div>
 
-      <div className={s['form-group']} role="list" aria-labelledby="loginDescription">
-        {TILES.map((tile, index) => (
-          <div key={tile.id} className={`${s.row} ${s.tile}`} role="listitem">
-            <div
-              id={tile.id}
-              className={s.table}
-              tabIndex={0}
-              role="button"
-              onClick={() => go(tile.next)}
-              onKeyDown={(event) => handleKeyDown(index, event)}
-            >
-              <div className={s['table-row']}>
-                <div className={`${s['table-cell']} ${s['tile-img']}`}>
-                  <img
-                    className={s['tile-img']}
-                    width="48"
-                    height="48"
-                    role="presentation"
-                    alt=""
-                    src={tile.icon}
-                  />
-                </div>
-                <div className={`${s['table-cell']} ${s['text-left']} ${s.content}`}>
-                  <div id={tile.titleId}>{tile.title}</div>
-                  <div id={tile.hintId}>
-                    <small>{tile.hint}</small>
+        <div className={s['form-group']} role="list" aria-labelledby="loginDescription">
+          {TILES.map((tile, index) => (
+            <div key={tile.id} className={`${s.row} ${s.tile}`} role="listitem">
+              <div
+                id={tile.id}
+                className={s.table}
+                tabIndex={0}
+                role="button"
+                onClick={() => go(tile.next)}
+                onKeyDown={(event) => handleKeyDown(index, event)}
+              >
+                <div className={s['table-row']}>
+                  <div className={`${s['table-cell']} ${s['tile-img']}`}>
+                    <img
+                      className={s['tile-img']}
+                      width="48"
+                      height="48"
+                      role="presentation"
+                      alt=""
+                      src={tile.icon}
+                    />
                   </div>
-                  <div>
-                    <small>{account}</small>
+                  <div className={`${s['table-cell']} ${s['text-left']} ${s.content}`}>
+                    <div id={tile.titleId}>{tile.title}</div>
+                    <div id={tile.hintId}>
+                      <small>{tile.hint}</small>
+                    </div>
+                    <div>
+                      <small>{account}</small>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className={s['position-buttons']}>
-        <div>
-          <div className={s['text-13']}>
-            <div className={s['form-group']}>
-              Tired of seeing this?{' '}
-              <a
-                id="iDisambigRenameLink"
-                href="https://go.microsoft.com/fwlink/p/?LinkID=733247"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Rename your personal Microsoft account.
-              </a>
+        <div className={s['position-buttons']}>
+          <div>
+            <div className={s['text-13']}>
+              <div className={s['form-group']}>
+                Tired of seeing this?{' '}
+                <a
+                  id="iDisambigRenameLink"
+                  href="https://go.microsoft.com/fwlink/p/?LinkID=733247"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Rename your personal Microsoft account.
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+      </StepBody>
       <div className={s['win-button-pin-bottom']}>
         <div className={s.row}>
           <div className={s['button-field-container']}>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   The step inside the box.
+   The contents of a step, on the move.
 
    Every value here is copied out of the reference captures:
      · classic pages animate `.pagination-view` 200px over a quarter of a
@@ -10,6 +10,9 @@
    It slides with `transform`, not with the `left` the reference animates:
    the row of buttons pinned to the bottom of the classic card is placed with
    `left`, and an animation on the same property would leave it moved.
+   (Transform has one consequence of its own, which is why `StepBody` wraps
+   only the contents of a step: it makes the element a containing block for
+   the pinned rows, so they must stay outside it.)
 
    The reference also defines `hide-to-left` / `hide-to-right` for the view
    that is being left. Those are not used: a second copy of a step would

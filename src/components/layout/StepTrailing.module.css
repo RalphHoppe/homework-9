@@ -1,0 +1,12 @@
+/* ==========================================================================
+   The trailing slot.
+
+   It exists so a step's content has a place to land below the box, but it
+   must not add a box of its own: the card it carries is sized against the
+   column it sits in (`width: calc(100% - 40px)`), and a wrapper would leave
+   it with nothing to measure itself against.
+   ========================================================================== */
+
+.slot {
+  display: contents;
+}

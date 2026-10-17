@@ -9,7 +9,6 @@ import { useFlowNavigation } from '@/flow/useFlowNavigation';
 import { stepAt, type StepMeta } from '@/flow/steps';
 import type { DesignFamily } from '@/components/brand/MicrosoftLogo';
 import { BackgroundLayers } from './BackgroundLayers';
-import { StepView } from './StepView';
 import { TrailingProvider, TrailingSlot } from './StepTrailing';
 import { ClassicFooter } from '../common/ClassicFooter';
 import { FluentFooter } from '../common/FluentFooter';
@@ -60,9 +59,8 @@ export function FlowShell() {
               >
                 <Header family={family} step={step} />
 
-                <StepView family={family}>
-                  <Outlet />
-                </StepView>
+                {/* the step, and whatever it wants to animate */}
+                <Outlet />
               </div>
 
               {/* what a step wants below the box — the sign-in step's second card */}

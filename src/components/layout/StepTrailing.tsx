@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import s from './StepTrailing.module.css';
 
 type Trailing = {
   host: HTMLElement | null;
@@ -24,7 +25,7 @@ export function TrailingProvider({ children }: { children: ReactNode }) {
 /** Where the trailing content lands — rendered by the shell, under the box. */
 export function TrailingSlot() {
   const { setHost } = useContext(Context);
-  return <div ref={setHost} />;
+  return <div ref={setHost} className={s.slot} />;
 }
 
 /** Renders its children under the box instead of inside it. */

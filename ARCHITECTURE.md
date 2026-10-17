@@ -10,7 +10,7 @@ must look exactly like the captured reference pages**, so this is a refactor of
 ```
 main.tsx ─▶ App.tsx ─▶ layout/FlowShell ─▶ steps/* ─▶ components/* ─▶ styles/*
                  │                  │
-                 │                  └─▶ layout/StepView (what moves)
+                 │                  └─▶ layout/StepBody (the part that moves)
                  └─▶ flow/*  (routing, session, account helpers)
 ```
 
@@ -26,7 +26,7 @@ there.
 `components/layout/FlowShell.tsx` is that shell, and it is the only layout:
 
 - It renders `BackgroundLayers`, the box, the logo (or the Fluent banner with its back /
-  close button), the step through `StepView`, a trailing slot, and the footer.
+  close button), the step, a trailing slot, and the footer.
 - It reads the step it is showing from `flow/steps.ts` and takes the shape of that step's
   family: `classic` (old pages, square white card, no radius) or `fluent` (new pages,
   rounded card with a soft shadow). Crossing between the two families **morphs the same
@@ -37,12 +37,13 @@ there.
   the background and the footer that the hand-written pages have no use for; the shell
   renders them for those steps only.
 
-`components/layout/StepView.tsx` is the part that changes. It is keyed by pathname, so a
-new element is mounted per step and the entry animation replays every time:
+`components/layout/StepBody.tsx` is the part that moves. A step wraps its own
+contents in it — the shell cannot, because not everything a step renders should
+move:
 
 |           | classic (`/`, `/pick-account`, `/work-password`, `/approve-sign-in`, `/work-enter-code`) | Fluent (the other four)                                        |
 | --------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| element   | the contents of the card, and the buttons pinned to it                                   | the contents of the card                                       |
+| element   | the contents of the card — **not** the row of buttons pinned to it                       | the contents of the card                                       |
 | effect    | slides 200px and fades in                                                                | fades in                                                       |
 | direction | in from the right going forward, from the left going back                                | none                                                           |
 | timing    | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both`                          | `250ms cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
@@ -55,7 +56,11 @@ in forward, the way the reference slides in its first view.
 The classic slide is `transform`, where the reference animates `left`: the row of buttons
 pinned to the card is placed with `left`, and an animation on the same property would
 leave it moved once it settled. The logo is left out of the slide, the way the captures
-leave it out of `.pagination-view`.
+leave it out of `.pagination-view` — and so is that pinned row, for the same reason
+`transform` was chosen: an animated element is a containing block for anything placed
+with `position: absolute`, so a pinned row inside `StepBody` would measure its 44px from
+the body instead of from the card, and every `Next`, `Back`, `Sign in` and `Verify`
+button would sit off the spot the reference puts it on.
 
 Two deliberate differences from the reference, noted in the components:
 
@@ -90,8 +95,8 @@ with the step that owns it and lands in the right place in the document.
 
 ### `components/` — the shared pieces
 
-- `layout/` — `FlowShell` (the one box), `StepView` (what moves inside it),
-  `StepTrailing` (the portalled slot below the box), `BackgroundLayers`.
+- `layout/` — `FlowShell` (the one box), `StepBody` (the part of a step that
+  moves), `StepTrailing` (the portalled slot below the box), `BackgroundLayers`.
 - `brand/` — `MicrosoftLogo` (two sizes, one per look) and `icons.tsx` (the Fluent icon
   path data, copied from the captures — never redrawn).
 - `common/` — `IdentityBadge`, `IconButton` (back / close), `DemoNote`, and the two
@@ -103,9 +108,12 @@ with the step that owns it and lands in the right place in the document.
 ### `steps/` — one step each
 
 Each step is self-contained: it owns its own local form state, its own validation copy,
-and renders only its own contents — the box it sits in belongs to the shell. They share
-nothing but `flow/` and `components/`, which keeps a change to one step from moving
-another. Tests sit next to them as `*.test.tsx`. `steps/elements.tsx` maps each path to
+and renders only its own contents — the box it sits in belongs to the shell. It wraps
+what should animate in `<StepBody>`, and leaves out what should not: on the classic
+steps the row of buttons pinned to the bottom of the card (`Next`, `Back`, `Sign in`,
+`Verify`) stays **outside** it. Those rows are placed with `position: absolute`, and an
+animated element is a containing block for absolutely placed descendants — wrapped in
+one, every pinned button would move off the spot the reference puts it on. Tests sit next to them as `*.test.tsx`. `steps/elements.tsx` maps each path to
 its step element, so the flow description in `flow/steps.ts` never has to import a
 component.
 
@@ -166,7 +174,8 @@ Query by role, label or text — never by CSS class. CSS Modules hash class name
 1. `ROUTES` in `flow/routes.ts`.
 2. `STEPS` in `flow/steps.ts` — its family decides the box, the footer, the banner and
    the animation.
-3. `src/steps/NewStepStep.tsx`, its element in `src/steps/elements.tsx`, and its route in
+3. `src/steps/NewStepStep.tsx` — its contents in `<StepBody>`, anything pinned to the
+   card outside it — plus its element in `src/steps/elements.tsx` and its route in
    `src/App.tsx`.
 4. `src/steps/NewStepStep.test.tsx`.
 5. `legacy/` reference for the copy and the CSS — and nothing else changes.

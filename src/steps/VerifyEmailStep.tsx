@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { StepBody } from '@/components/layout/StepBody';
 import s from '@/styles/fluent.module.css';
 import { IdentityBadge } from '@/components/common/IdentityBadge';
 import { FluentTextField } from '@/components/fields/FluentTextField';
@@ -34,53 +35,55 @@ export function VerifyEmailStep() {
 
   return (
     <>
-      <IdentityBadge account={account} />
+      <StepBody>
+        <IdentityBadge account={account} />
 
-      <h1 className={s.title} id="loginHeader">
-        Verify your email
-      </h1>
+        <h1 className={s.title} id="loginHeader">
+          Verify your email
+        </h1>
 
-      <p className={s.subtitle}>
-        We&apos;ll send a code to <span className={s.email}>{maskEmail(account)}</span>. To verify
-        this is your email, enter it here.
-      </p>
+        <p className={s.subtitle}>
+          We&apos;ll send a code to <span className={s.email}>{maskEmail(account)}</span>. To verify
+          this is your email, enter it here.
+        </p>
 
-      <form id="emailForm" noValidate onSubmit={submit}>
-        <FluentTextField
-          id="proof-confirmation-email-input"
-          shellId="inputShell"
-          label="Email"
-          type="email"
-          value={email}
-          autoComplete="email"
-          autoFocus
-          describedBy="emailError"
-          invalid={Boolean(error)}
-          onChange={(next) => {
-            setEmail(next);
-            if (error) setError(null);
-          }}
-        />
+        <form id="emailForm" noValidate onSubmit={submit}>
+          <FluentTextField
+            id="proof-confirmation-email-input"
+            shellId="inputShell"
+            label="Email"
+            type="email"
+            value={email}
+            autoComplete="email"
+            autoFocus
+            describedBy="emailError"
+            invalid={Boolean(error)}
+            onChange={(next) => {
+              setEmail(next);
+              if (error) setError(null);
+            }}
+          />
 
-        <ValidationMessage id="emailError" textId="emailErrorText" visible={Boolean(error)}>
-          {error ?? 'Enter the email address for your account.'}
-        </ValidationMessage>
+          <ValidationMessage id="emailError" textId="emailErrorText" visible={Boolean(error)}>
+            {error ?? 'Enter the email address for your account.'}
+          </ValidationMessage>
 
-        <div className={s.actions}>
-          <button type="submit" className={s['primary-button']} id="idSIButton9">
-            Send code
-          </button>
+          <div className={s.actions}>
+            <button type="submit" className={s['primary-button']} id="idSIButton9">
+              Send code
+            </button>
+          </div>
+        </form>
+
+        <div className={s['view-footer']}>
+          <a className={s.link} href={href(ROUTES.enterCode)} id="alreadyReceivedLink">
+            Already received a code?
+          </a>
+          <a className={s.link} href={href(ROUTES.password)} id="usePasswordLink">
+            Use your password
+          </a>
         </div>
-      </form>
-
-      <div className={s['view-footer']}>
-        <a className={s.link} href={href(ROUTES.enterCode)} id="alreadyReceivedLink">
-          Already received a code?
-        </a>
-        <a className={s.link} href={href(ROUTES.password)} id="usePasswordLink">
-          Use your password
-        </a>
-      </div>
+      </StepBody>
     </>
   );
 }

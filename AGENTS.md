@@ -34,6 +34,9 @@ All four must be green. Do not commit a change that only passes three.
 - **The flow is one box.** A step renders only its own contents: the background, the box,
   the logo (or the Fluent banner) and the footer belong to `layout/FlowShell` and are
   never repeated inside a step. Which look a step gets is declared in `flow/steps.ts`.
+- **`<StepBody>` wraps what moves, and only what moves.** Never put a row of buttons that
+  is pinned to the card (`position: absolute`) inside it — an animated element is a
+  containing block for those, and wrapping one moves every pinned button.
 - Icons use the real Fluent path data (`src/components/brand/icons.tsx`). Do not
   hand-draw an approximation.
 - Tests live beside the code: `src/**/*.test.{ts,tsx}`, Vitest + jsdom. Query by role,

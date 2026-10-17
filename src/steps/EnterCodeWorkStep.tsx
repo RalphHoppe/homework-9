@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { StepBody } from '@/components/layout/StepBody';
 import s from '@/styles/classic.module.css';
 import { cx } from '@/utils/cx';
 import { DemoNote } from '@/components/common/DemoNote';
@@ -50,95 +51,96 @@ export function EnterCodeWorkStep() {
   return (
     <>
       <form noValidate onSubmit={verify}>
-        {/* back to the approval step, and which account is being signed in to */}
-        <div className={s.identityBanner}>
-          <button
-            type="button"
-            className={s.backButton}
-            id="idBtn_Back"
-            aria-label="Back"
-            onClick={() => go(ROUTES.approveSignIn)}
-          >
-            <img
-              className="back-icon"
-              width="24"
-              height="24"
-              role="presentation"
-              alt=""
-              src={arrowLeft}
-            />
-          </button>
-          <div id="displayName" className={s.identity} title={account}>
-            {account}
+        <StepBody>
+          {/* back to the approval step, and which account is being signed in to */}
+          <div className={s.identityBanner}>
+            <button
+              type="button"
+              className={s.backButton}
+              id="idBtn_Back"
+              aria-label="Back"
+              onClick={() => go(ROUTES.approveSignIn)}
+            >
+              <img
+                className="back-icon"
+                width="24"
+                height="24"
+                role="presentation"
+                alt=""
+                src={arrowLeft}
+              />
+            </button>
+            <div id="displayName" className={s.identity} title={account}>
+              {account}
+            </div>
           </div>
-        </div>
 
-        <div id="idDiv_SAOTCC_Title" className={cx(s.row, s.title)} role="heading" aria-level={1}>
-          Enter code
-        </div>
-
-        <div className={cx(s.row, s['text-body'])}>
-          <div>
-            <img
-              className={cx(s['tile-img'], s.small)}
-              width="24"
-              height="24"
-              role="presentation"
-              alt=""
-              src={codeIcon}
-            />
+          <div id="idDiv_SAOTCC_Title" className={cx(s.row, s.title)} role="heading" aria-level={1}>
+            Enter code
           </div>
-          {/* the reference copy ends in a zero-width space */}
-          <div id="idDiv_SAOTCC_Description" className={s['overflow-hidden']}>
-            {'Enter the code displayed in the Microsoft Authenticator app on your mobile device​'}
-          </div>
-        </div>
 
-        <div className={s['form-group']} id="idDiv_SAOTCC_OTCRow">
-          <InlineError id="idDiv_SAOTCC_Success_OTC" message={error} />
-          <div className={s['form-group']} id="idDiv_SAOTCC_OTC">
-            <UnderlineField
-              id="idTxtBx_SAOTCC_OTC"
-              type="tel"
-              value={code}
-              onChange={(next) => {
-                setCode(next);
-                if (error) setError(null);
-                if (note) setNote(null);
-              }}
-              labelledBy="idDiv_SAOTCC_Title"
-              describedBy="idDiv_SAOTCC_Description idDiv_SAOTCC_Success_OTC"
-              autoComplete="one-time-code"
-              maxLength={6}
-              invalid={Boolean(error)}
-              inputRef={field}
-            />
-            <DemoNote message={note} family="classic" />
+          <div className={cx(s.row, s['text-body'])}>
+            <div>
+              <img
+                className={cx(s['tile-img'], s.small)}
+                width="24"
+                height="24"
+                role="presentation"
+                alt=""
+                src={codeIcon}
+              />
+            </div>
+            {/* the reference copy ends in a zero-width space */}
+            <div id="idDiv_SAOTCC_Description" className={s['overflow-hidden']}>
+              {'Enter the code displayed in the Microsoft Authenticator app on your mobile device​'}
+            </div>
           </div>
-        </div>
 
-        <div className={s['position-buttons']}>
-          <div className={s.row}>
-            {/* the "trouble" section the real page shows when it needs to */}
-            <div id="idDiv_SAOTCC_TD_Section" className={s['no-margin-top-bottom']} hidden />
-            <div className={s['col-md-24']}>
-              <div className={s['text-13']}>
-                <div className={s['form-group']}>
-                  <a
-                    id="moreInfoUrl"
-                    href="https://go.microsoft.com/fwlink/p/?LinkId=708614"
-                    aria-label="More information about two step verification"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    More information
-                  </a>
+          <div className={s['form-group']} id="idDiv_SAOTCC_OTCRow">
+            <InlineError id="idDiv_SAOTCC_Success_OTC" message={error} />
+            <div className={s['form-group']} id="idDiv_SAOTCC_OTC">
+              <UnderlineField
+                id="idTxtBx_SAOTCC_OTC"
+                type="tel"
+                value={code}
+                onChange={(next) => {
+                  setCode(next);
+                  if (error) setError(null);
+                  if (note) setNote(null);
+                }}
+                labelledBy="idDiv_SAOTCC_Title"
+                describedBy="idDiv_SAOTCC_Description idDiv_SAOTCC_Success_OTC"
+                autoComplete="one-time-code"
+                maxLength={6}
+                invalid={Boolean(error)}
+                inputRef={field}
+              />
+              <DemoNote message={note} family="classic" />
+            </div>
+          </div>
+
+          <div className={s['position-buttons']}>
+            <div className={s.row}>
+              {/* the "trouble" section the real page shows when it needs to */}
+              <div id="idDiv_SAOTCC_TD_Section" className={s['no-margin-top-bottom']} hidden />
+              <div className={s['col-md-24']}>
+                <div className={s['text-13']}>
+                  <div className={s['form-group']}>
+                    <a
+                      id="moreInfoUrl"
+                      href="https://go.microsoft.com/fwlink/p/?LinkId=708614"
+                      aria-label="More information about two step verification"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      More information
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
+        </StepBody>
         <div className={s['win-button-pin-bottom']}>
           <div className={s.row}>
             <div className={s['button-field-container']}>

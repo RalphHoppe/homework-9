@@ -20,7 +20,7 @@ describe('the flow shell', () => {
 
     expect(view.location()).toBe('/pick-account?email=anton5%40abv.bg');
     expect(screen.getByTestId('flow-box')).toBe(box);
-    expect(screen.getByTestId('step-view')).toHaveTextContent(
+    expect(screen.getByTestId('step-body')).toHaveTextContent(
       'It looks like this email is used with more than one account',
     );
   });
@@ -47,10 +47,21 @@ describe('the flow shell', () => {
 
   it('slides a classic step and fades a Fluent one', () => {
     const classic = renderFlow('/');
-    expect(screen.getByTestId('step-view')).toHaveAttribute('data-family', 'classic');
+    expect(screen.getByTestId('step-body')).toHaveAttribute('data-animation', 'slide-next');
     classic.unmount();
 
     renderFlow('/verify-email');
-    expect(screen.getByTestId('step-view')).toHaveAttribute('data-family', 'fluent');
+    expect(screen.getByTestId('step-body')).toHaveAttribute('data-animation', 'fade');
+  });
+
+  it('leaves a row of buttons pinned to the card out of the animation', () => {
+    // The pinned rows are placed with `position: absolute`, and an animated
+    // element is a containing block for them — inside one, they would move.
+    renderFlow('/work-password');
+    const pinned = document.querySelector('#idSIButton9')?.closest('[data-testid="step-body"]');
+    expect(pinned).toBeNull();
+    expect(screen.getByTestId('flow-box')).toContainElement(
+      document.querySelector('#idSIButton9')!,
+    );
   });
 });
