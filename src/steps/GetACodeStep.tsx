@@ -1,6 +1,4 @@
 import s from '@/styles/fluent.module.css';
-import { FluentLayout } from '@/components/layout/FluentLayout';
-import { MicrosoftLogo } from '@/components/brand/MicrosoftLogo';
 import { IdentityBadge } from '@/components/common/IdentityBadge';
 import { DemoNote } from '@/components/common/DemoNote';
 import { useSession } from '@/flow/SessionProvider';
@@ -12,21 +10,14 @@ import { ROUTES } from '@/flow/routes';
  * "Get a code to sign in" — reached by picking the personal account.
  * Send code opens the verify-email step, the way the real flow does.
  */
-export function GetACodePage() {
+export function GetACodeStep() {
   usePageTitle('Get a code to sign in');
 
   const { account, href } = useSession();
   const go = useFlowNavigation();
 
   return (
-    <FluentLayout>
-      {/* Banner: Microsoft logo, centred. The real page has no dismiss button here. */}
-      <div className={s.banner}>
-        <span aria-hidden="true" />
-        <MicrosoftLogo className={s.logo} />
-        <span className={s['banner-end']} aria-hidden="true" />
-      </div>
-
+    <>
       <IdentityBadge account={account} />
 
       <h1 className={s.title} id="loginHeader">
@@ -58,6 +49,6 @@ export function GetACodePage() {
           Use your password
         </a>
       </div>
-    </FluentLayout>
+    </>
   );
 }

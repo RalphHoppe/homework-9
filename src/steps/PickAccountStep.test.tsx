@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { PickAccountPage } from './PickAccountPage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderPicker = () => renderPage(<PickAccountPage />, '/pick-account?email=anton5%40abv.bg');
+const renderPicker = () => renderFlow('/pick-account?email=anton5%40abv.bg');
 
-describe('PickAccountPage', () => {
+describe('PickAccountStep', () => {
   it('explains why it is asking', () => {
     renderPicker();
     expect(document.getElementById('loginDescription')).toHaveTextContent(

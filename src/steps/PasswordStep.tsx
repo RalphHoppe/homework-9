@@ -1,26 +1,21 @@
 import { useState } from 'react';
 import s from '@/styles/fluent.module.css';
-import { FluentLayout } from '@/components/layout/FluentLayout';
-import { MicrosoftLogo } from '@/components/brand/MicrosoftLogo';
 import { IdentityBadge } from '@/components/common/IdentityBadge';
-import { IconButton } from '@/components/common/IconButton';
 import { DemoNote } from '@/components/common/DemoNote';
 import { FluentTextField } from '@/components/fields/FluentTextField';
 import { ValidationMessage } from '@/components/fields/ValidationMessage';
 import { useSession } from '@/flow/SessionProvider';
 import { usePageTitle } from '@/flow/usePageTitle';
-import { useFlowNavigation } from '@/flow/useFlowNavigation';
 import { ROUTES } from '@/flow/routes';
 
 /**
  * "Enter your password" — the personal-account password step, reached from
  * "Use your password".
  */
-export function PasswordPage() {
+export function PasswordStep() {
   usePageTitle('Enter your password');
 
   const { account, href } = useSession();
-  const go = useFlowNavigation();
 
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -37,13 +32,7 @@ export function PasswordPage() {
   }
 
   return (
-    <FluentLayout>
-      <div className={s.banner}>
-        <IconButton icon="back" label="Back" onClick={() => go(ROUTES.signIn)} />
-        <MicrosoftLogo className={s.logo} />
-        <span className={s['banner-end']} aria-hidden="true" />
-      </div>
-
+    <>
       <IdentityBadge account={account} />
 
       <h1 className={s.title} id="loginHeader">
@@ -88,6 +77,6 @@ export function PasswordPage() {
           Send a code to {account}
         </a>
       </div>
-    </FluentLayout>
+    </>
   );
 }

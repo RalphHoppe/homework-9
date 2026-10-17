@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { VerifyEmailPage } from './VerifyEmailPage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderVerify = () => renderPage(<VerifyEmailPage />, '/verify-email?email=anton5%40abv.bg');
+const renderVerify = () => renderFlow('/verify-email?email=anton5%40abv.bg');
 
-describe('VerifyEmailPage', () => {
+describe('VerifyEmailStep', () => {
   it('masks the address the way the reference does', () => {
     renderVerify();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Verify your email');

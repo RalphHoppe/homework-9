@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { SignInPage } from './SignInPage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderSignIn = () => renderPage(<SignInPage />, '/');
+const renderSignIn = () => renderFlow('/');
 
-describe('SignInPage', () => {
+describe('SignInStep', () => {
   it('is the first step of the flow', () => {
     renderSignIn();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Sign in');

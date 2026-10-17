@@ -1,0 +1,73 @@
+/* ==========================================================================
+   The step inside the box.
+
+   Every value here is copied out of the reference captures:
+     · classic pages animate `.pagination-view` 200px over a quarter of a
+       second with cubic-bezier(.5, 0, .5, 1);
+     · Fluent pages fade the new view in over 0.25s, on the curve the box
+       morphs on.
+
+   It slides with `transform`, not with the `left` the reference animates:
+   the row of buttons pinned to the bottom of the classic card is placed with
+   `left`, and an animation on the same property would leave it moved.
+
+   The reference also defines `hide-to-left` / `hide-to-right` for the view
+   that is being left. Those are not used: a second copy of a step would
+   duplicate every element id in the document for as long as it is on screen.
+   ========================================================================== */
+
+.slide {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+  animation-fill-mode: both;
+}
+
+.slide-in-next {
+  animation-name: show-from-right;
+}
+
+.slide-in-back {
+  animation-name: show-from-left;
+}
+
+@keyframes show-from-right {
+  from {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes show-from-left {
+  from {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.fade {
+  animation: fade-in 0.25s var(--curveDecelerateMax) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .fade {
+    animation: none;
+  }
+}

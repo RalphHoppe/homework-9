@@ -1,6 +1,7 @@
 /**
- * One place for every step of the flow, so a page never hard-codes another
- * page's URL.
+ * One place for every path of the flow, so a step never hard-codes another
+ * step's URL. Which step lives at which path — and which design system it
+ * belongs to — is in `flow/steps.ts`.
  *
  *   sign in ─┬─ personal ─→ get a code ─→ verify email ─→ enter code
  *            │                          └→ password (personal)
@@ -20,16 +21,3 @@ export const ROUTES = {
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
-
-/** The order the steps are walked in, used only for documentation/tests. */
-export const STEP_ORDER: RoutePath[] = [
-  ROUTES.signIn,
-  ROUTES.pickAccount,
-  ROUTES.getACode,
-  ROUTES.verifyEmail,
-  ROUTES.enterCode,
-  ROUTES.password,
-  ROUTES.workPassword,
-  ROUTES.approveSignIn,
-  ROUTES.workEnterCode,
-];

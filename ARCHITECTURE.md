@@ -1,20 +1,84 @@
 # Architecture
 
-A single-page app with one component per step of the Microsoft sign-in flow. The design
-goal is unusual and drives most decisions below: **the pages must look exactly like the
-captured reference pages**, so this is a refactor of `legacy/*.html`, not a redesign.
+A single-page app with one component per step of the Microsoft sign-in flow, rendered
+inside one shell. The design goal is unusual and drives most decisions below: **the pages
+must look exactly like the captured reference pages**, so this is a refactor of
+`legacy/*.html`, not a redesign.
 
 ## Layers
 
 ```
-main.tsx ─▶ App.tsx ─▶ pages/* ─▶ components/* ─▶ styles/*
-                 │
+main.tsx ─▶ App.tsx ─▶ layout/FlowShell ─▶ steps/* ─▶ components/* ─▶ styles/*
+                 │                  │
+                 │                  └─▶ layout/StepView (what moves)
                  └─▶ flow/*  (routing, session, account helpers)
 ```
 
+## One box
+
+The flow is **one box** that never unmounts. Moving from one step to the next changes
+what is inside it, not what is on the screen around it: the background, the box, the logo
+and the footer stay put, and only the contents of the box are replaced. The steps are
+still routes — every step keeps its own URL, so a reload, a bookmark and the browser's
+back button all work — but in normal use nothing loads, because the shell is already
+there.
+
+`components/layout/FlowShell.tsx` is that shell, and it is the only layout:
+
+- It renders `BackgroundLayers`, the box, the logo (or the Fluent banner with its back /
+  close button), the step through `StepView`, a trailing slot, and the footer.
+- It reads the step it is showing from `flow/steps.ts` and takes the shape of that step's
+  family: `classic` (old pages, square white card, no radius) or `fluent` (new pages,
+  rounded card with a soft shadow). Crossing between the two families **morphs the same
+  box** — radius, shadow, padding, width, typography and height all transition — rather
+  than swapping one card for another. `layout/box.module.css` holds that transition.
+- The footer belongs to the family too, so it swaps without morphing.
+- `captured` steps (the two that were saved from the live flow) carry ids on the shell,
+  the background and the footer that the hand-written pages have no use for; the shell
+  renders them for those steps only.
+
+`components/layout/StepView.tsx` is the part that changes. It is keyed by pathname, so a
+new element is mounted per step and the entry animation replays every time:
+
+|           | classic (`/`, `/pick-account`, `/work-password`, `/approve-sign-in`, `/work-enter-code`) | Fluent (the other four)                                        |
+| --------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| element   | the contents of the card, and the buttons pinned to it                                   | the contents of the card                                       |
+| effect    | slides 200px and fades in                                                                | fades in                                                       |
+| direction | in from the right going forward, from the left going back                                | none                                                           |
+| timing    | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both`                          | `250ms cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
+
+The direction travels with the navigation: `useFlowNavigation` compares the two steps in
+`STEP_ORDER` and puts the answer in the router location state, which `useFlowDirection`
+reads. Steps reached by a plain link or by loading the page carry no direction and slide
+in forward, the way the reference slides in its first view.
+
+The classic slide is `transform`, where the reference animates `left`: the row of buttons
+pinned to the card is placed with `left`, and an animation on the same property would
+leave it moved once it settled. The logo is left out of the slide, the way the captures
+leave it out of `.pagination-view`.
+
+Two deliberate differences from the reference, noted in the components:
+
+- **The outgoing view is not animated.** The reference fades it out (`hide-to-left` /
+  `hide-to-right`) over the first half of the transition. This app renders one step at a
+  time, and holding two copies of a step would duplicate every element id in the
+  document — so the incoming view starts immediately instead of after a 0.25s delay.
+- **The box grows and shrinks instead of jumping.** Height cannot be transitioned to
+  `auto`, so the shell keeps the height the last step settled at in a ref and animates
+  from there — measured in a layout effect, never during render.
+
+`components/layout/StepTrailing.tsx` is the escape hatch for a step that wants something
+below the box but above the footer: the sign-in step's second card ("Sign-in options")
+is declared inside the step and portalled into the shell's trailing slot, so it stays
+with the step that owns it and lands in the right place in the document.
+
 ### `flow/` — the state of the flow
 
-- `routes.ts` — `ROUTES` (the only place a path is spelled out), `RoutePath`, `STEP_ORDER`.
+- `steps.ts` — `STEPS`: every step in flow order, with its path, its design family,
+  whether it was captured from the live flow, and which button leads its banner (`back`
+  or `close`, Fluent only). **This is the one place the shape of the flow is described**;
+  the router table, the shell and the direction helper all read from it.
+- `routes.ts` — `ROUTES` (the only place a path is spelled out) and `RoutePath`.
 - `account.ts` — pure helpers: `classifyAccount`, `maskEmail`, `withAccount`, and the
   `localStorage` read/write behind the `msft-demo-email` key.
 - `SessionProvider.tsx` — the one piece of shared state: `account`. It is **derived**, not
@@ -26,13 +90,8 @@ main.tsx ─▶ App.tsx ─▶ pages/* ─▶ components/* ─▶ styles/*
 
 ### `components/` — the shared pieces
 
-- `layout/` — `ClassicLayout` and `FluentLayout` render the background layers and the
-  `outer / middle` skeleton of their look, and set `data-family`. Every page picks one.
-  Both wrap their content in `PageTransition`, which plays the animation the
-  reference pages play when the flow moves on (see below). `ClassicLayout` takes a
-  `captured` flag: the two steps that were saved from the live flow carry ids on the
-  shell and the footer that the hand-written pages have no use for, and this renders
-  them (`BackgroundLayers`, `ClassicFooter`).
+- `layout/` — `FlowShell` (the one box), `StepView` (what moves inside it),
+  `StepTrailing` (the portalled slot below the box), `BackgroundLayers`.
 - `brand/` — `MicrosoftLogo` (two sizes, one per look) and `icons.tsx` (the Fluent icon
   path data, copied from the captures — never redrawn).
 - `common/` — `IdentityBadge`, `IconButton` (back / close), `DemoNote`, and the two
@@ -41,48 +100,14 @@ main.tsx ─▶ App.tsx ─▶ pages/* ─▶ components/* ─▶ styles/*
   toggle), `CodeEntry` (six boxes, paste, arrows, backspace), `InlineError`,
   `ValidationMessage`.
 
-### `pages/` — one step each
+### `steps/` — one step each
 
-Each page is self-contained: it owns its own local form state, its own validation copy,
-and renders one layout. They share nothing but `flow/` and `components/`, which keeps a
-change to one step from moving another. Tests sit next to them as `*.test.tsx`.
-
-## Moving between steps
-
-`components/layout/PageTransition.tsx` plays the step-to-step animation, and the
-two families do it differently — both copied out of the captures. A classic page
-keeps its card still and slides what is **inside** it (`SlideIn`); a Fluent page
-wraps the whole step (`PageTransition`):
-
-|           | classic (`/`, `/pick-account`, `/work-password`, `/approve-sign-in`, `/work-enter-code`) | Fluent (the other four)                                                             |
-| --------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| element   | the contents of the card, and the buttons pinned to it                                   | `data-testid="routeAnimationFluent"`                                                |
-| effect    | slides 200px and fades in                                                                | fades in while the box changes height                                               |
-| direction | in from the right going forward, from the left going back                                | none                                                                                |
-| timing    | `0.25s cubic-bezier(.5, 0, .5, 1)`, `animation-fill-mode: both`                          | `0.25s` fade, height `0.25s cubic-bezier(.1, 0.9, 0.2, 1)` = `--curveDecelerateMax` |
-
-The direction travels with the navigation: `useFlowNavigation` compares the two
-steps in `STEP_ORDER` and puts the answer in the router location state, which
-`useFlowDirection` reads. Steps reached by a plain link or by loading the page
-carry no direction and slide in forward, the way the reference slides in its
-first view.
-
-The classic slide is `transform`, where the reference animates `left`: the row of
-buttons pinned to the card is placed with `left`, and an animation on the same
-property would leave it moved once it settled. The logo is left out of the slide,
-the way the captures leave it out of `.pagination-view`.
-
-One deliberate difference from the reference, noted in the component:
-
-- **The outgoing view is not animated.** The reference fades it out
-  (`hide-to-left` / `hide-to-right`) over the first half of the transition. This
-  app renders one step at a time, and holding two copies of a page would
-  duplicate every element id in the document — so the incoming view starts
-  immediately instead of after a 0.25s delay.
-
-Height cannot be transitioned to `auto`, so the Fluent variant keeps the height
-the last step settled at in a ref and animates from there — measured in a layout
-effect, never during render.
+Each step is self-contained: it owns its own local form state, its own validation copy,
+and renders only its own contents — the box it sits in belongs to the shell. They share
+nothing but `flow/` and `components/`, which keeps a change to one step from moving
+another. Tests sit next to them as `*.test.tsx`. `steps/elements.tsx` maps each path to
+its step element, so the flow description in `flow/steps.ts` never has to import a
+component.
 
 ## Styling
 
@@ -91,12 +116,14 @@ effect, never during render.
   fixed background layers. Loaded once from `main.tsx`.
 - `styles/classic.module.css` and `styles/fluent.module.css` — CSS Modules, one per look,
   **ported verbatim** from `legacy/styles.css`. Both are scoped by a single `root`
-  ancestor class that the matching layout component applies; rules are reached as
-  `.root .tile` and consumed as `s['tile']`.
+  ancestor class that the shell applies; rules are reached as `.root .tile` and consumed
+  as `s['tile']`.
+- `components/layout/box.module.css` — the one box: the morph between the two looks, and
+  the height transition.
 - Values are not rounded, converted or "cleaned up". If the reference says
   `padding: 24px 32px 32px`, the module says exactly that.
 - The two captured work steps disagree with the hand-written pages in one place — their
-  card leaves 28px under itself instead of 20px — so that value lives on a page class
+  card leaves 28px under itself instead of 20px — so that value lives on a step class
   (`.sign-in-box.verify-box`) rather than on the shared rule.
 - Two ids became classes during the port (`#usernameError`, `#passwordError`,
   `#alertRegion`) because CSS Modules cannot scope ids. The React markup uses them as
@@ -117,15 +144,19 @@ change, not a tidy-up.
 Vitest + jsdom + Testing Library, `src/**/*.test.{ts,tsx}`:
 
 - `src/flow/account.test.ts` — the pure helpers.
-- `src/pages/*.test.tsx` — behaviour per step: what shows before you touch anything,
+- `src/steps/*.test.tsx` — behaviour per step: what shows before you touch anything,
   which error appears when you submit too early, where each button or link goes.
+- `src/components/layout/FlowShell.test.tsx` — that the box is the same element before
+  and after a step change, that it morphs with the family, and that the footer and the
+  animation follow the family too.
 - `src/App.test.tsx` — the route table and the unknown-route fallback.
-- `src/test/fidelity.test.tsx` — renders every step and compares its element ids,
-  copy and title with the `legacy/*.html` page it replaced. This is the test that
-  fails if someone changes the words or drops an id from the reference.
+- `src/test/fidelity.test.tsx` — renders every step inside the shell and compares its
+  element ids, copy and title with the `legacy/*.html` page it replaced. This is the test
+  that fails if someone changes the words or drops an id from the reference.
 
-`src/test/renderPage.tsx` mounts a page inside `MemoryRouter` + `SessionProvider` and
-exposes `location()` so a test can assert the navigation that followed a click.
+`src/test/renderFlow.tsx` mounts the flow — `MemoryRouter` + `SessionProvider` + the
+shell with all of its routes — at the route a test names, and exposes `location()` so a
+test can assert the navigation that followed a click.
 
 Query by role, label or text — never by CSS class. CSS Modules hash class names, so
 `.subtitle` does not exist in the rendered DOM even though it exists in the source.
@@ -133,7 +164,9 @@ Query by role, label or text — never by CSS class. CSS Modules hash class name
 ## Adding a step
 
 1. `ROUTES` in `flow/routes.ts`.
-2. `src/pages/NewStepPage.tsx` inside the matching layout.
-3. Route in `src/App.tsx`.
-4. `src/pages/NewStepPage.test.tsx`.
+2. `STEPS` in `flow/steps.ts` — its family decides the box, the footer, the banner and
+   the animation.
+3. `src/steps/NewStepStep.tsx`, its element in `src/steps/elements.tsx`, and its route in
+   `src/App.tsx`.
+4. `src/steps/NewStepStep.test.tsx`.
 5. `legacy/` reference for the copy and the CSS — and nothing else changes.

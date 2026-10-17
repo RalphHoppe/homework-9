@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { GetACodePage } from './GetACodePage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderCode = () => renderPage(<GetACodePage />, '/get-a-code?email=jane.doe%40contoso.com');
+const renderCode = () => renderFlow('/get-a-code?email=jane.doe%40contoso.com');
 
-describe('GetACodePage', () => {
+describe('GetACodeStep', () => {
   it('names the account the code would go to', () => {
     renderCode();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Get a code to sign in');

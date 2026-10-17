@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { EnterCodePage } from './EnterCodePage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderCode = () => renderPage(<EnterCodePage />, '/enter-code?email=anton5%40abv.bg');
+const renderCode = () => renderFlow('/enter-code?email=anton5%40abv.bg');
 const boxes = () => screen.getAllByRole('textbox') as HTMLInputElement[];
 
-describe('EnterCodePage', () => {
+describe('EnterCodeStep', () => {
   it('shows six boxes, the first one wide enough for a pasted code', () => {
     renderCode();
     const inputs = boxes();

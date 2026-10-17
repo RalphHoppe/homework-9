@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { PasswordPage } from './PasswordPage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderPassword = () => renderPage(<PasswordPage />, '/password?email=saved%40contoso.com');
+const renderPassword = () => renderFlow('/password?email=saved%40contoso.com');
 
-describe('PasswordPage', () => {
+describe('PasswordStep', () => {
   it('is the password step of a personal account', () => {
     renderPassword();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Enter your password');

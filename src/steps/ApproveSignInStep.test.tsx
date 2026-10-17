@@ -1,12 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
-import { renderPage } from '@/test/renderPage';
-import { ApproveSignInPage } from './ApproveSignInPage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderApprove = () =>
-  renderPage(<ApproveSignInPage />, '/approve-sign-in?email=anton5%40abv.bg');
+const renderApprove = () => renderFlow('/approve-sign-in?email=anton5%40abv.bg');
 
-describe('ApproveSignInPage', () => {
+describe('ApproveSignInStep', () => {
   it('shows the number to type into the app', () => {
     renderApprove();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Approve sign in request');

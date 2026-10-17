@@ -1,0 +1,30 @@
+/* ==========================================================================
+   The box the flow lives in.
+
+   One element for the whole flow: the steps move through it, it never
+   unmounts. It is also the one thing that changes between the two design
+   systems, so the values the two cards disagree on — corners, shadow,
+   padding, height — are transitioned here. The card sizes and colours
+   themselves stay in the family stylesheets.
+
+   The curve is the Fluent one (--curveDecelerateMax), the same one the height
+   animation of the reference uses.
+   ========================================================================== */
+
+.box {
+  overflow: hidden; /* the steps slide and fade inside it; nothing may spill out */
+  transition:
+    border-radius 0.25s var(--curveDecelerateMax),
+    box-shadow 0.25s var(--curveDecelerateMax),
+    padding 0.25s var(--curveDecelerateMax),
+    min-width 0.25s var(--curveDecelerateMax),
+    min-height 0.25s var(--curveDecelerateMax),
+    background-color 0.25s var(--curveDecelerateMax),
+    height 0.25s var(--curveDecelerateMax);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box {
+    transition: none;
+  }
+}

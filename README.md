@@ -5,7 +5,13 @@ A pixel-faithful, interactive mockup of the Microsoft sign-in flow, rebuilt as a
 reproduction used to study the flow, and every page says so where the real one asks you to
 trust it.
 
-## Pages
+## Steps
+
+Every step below is a route of its own, and all of them are rendered inside the **same
+box**: moving through the flow changes the contents of the box, not the page. The box
+takes the shape of the step it is showing — the classic steps get the square white card
+of the old pages, the Fluent ones the rounded card with the soft shadow — and morphs
+between the two as the flow crosses from one look to the other.
 
 | Route              | Page                       | Look               |
 | ------------------ | -------------------------- | ------------------ |
@@ -22,10 +28,10 @@ trust it.
 `src/test/fidelity.test.tsx` is the guard on the whole idea: it renders every step and
 compares its element ids, copy and title against the HTML page it replaced.
 
-Moving from one step to the next is animated the way the reference animates it: on the
-classic steps the card stays put and what is inside it slides 200px and fades in; on the
-Fluent steps the view fades in while its box changes height. `ARCHITECTURE.md` has the
-numbers.
+Moving from one step to the next is animated the way the reference animates it, and only
+inside the card: on the classic steps the box stays put and what is inside it slides
+200px and fades in; on the Fluent steps the contents fade in while the box grows or
+shrinks to fit them. `ARCHITECTURE.md` has the numbers.
 
 The account name is carried along the flow as `?email=…` (and remembered in
 `localStorage` under `msft-demo-email`), so every step can show the same identity the
@@ -63,9 +69,9 @@ npm run verify     # typecheck + lint + test + build, the whole gate
 src/
   main.tsx            React entry point
   App.tsx             route table
-  pages/              one component per step (+ a colocated *.test.tsx)
-  components/         layout / brand / common / fields — the shared pieces
-  flow/               routing constants, session + account helpers, hooks
+  steps/              one component per step (+ a colocated *.test.tsx)
+  components/         layout (the one box) / brand / common / fields
+  flow/               routing constants, the flow description, session + account helpers
   styles/             global.css (tokens, reset, background) + the two CSS Modules
   assets/             logo, background, icons
   test/               vitest setup and the render helper
@@ -80,6 +86,6 @@ changing things without breaking the illusion.
 
 ## `legacy/`
 
-The seven original HTML pages live on in `legacy/` with their `styles.css` and `flow.js`.
+The original HTML pages live on in `legacy/` with their `styles.css` and `flow.js`.
 They are the reference the React pages were ported from — keep them, and diff against
 them when a pixel is in question. They are deliberately **not** formatted or modernised.

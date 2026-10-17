@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import s from '@/styles/fluent.module.css';
-import { FluentLayout } from '@/components/layout/FluentLayout';
-import { MicrosoftLogo } from '@/components/brand/MicrosoftLogo';
 import { IdentityBadge } from '@/components/common/IdentityBadge';
-import { IconButton } from '@/components/common/IconButton';
 import { FluentTextField } from '@/components/fields/FluentTextField';
 import { ValidationMessage } from '@/components/fields/ValidationMessage';
 import { useSession } from '@/flow/SessionProvider';
@@ -16,7 +13,7 @@ import { maskEmail } from '@/flow/account';
  * "Verify your email" — the masked address has to be typed in full before a
  * code is sent.
  */
-export function VerifyEmailPage() {
+export function VerifyEmailStep() {
   usePageTitle('Verify your email');
 
   const { account, href } = useSession();
@@ -36,13 +33,7 @@ export function VerifyEmailPage() {
   }
 
   return (
-    <FluentLayout>
-      <div className={s.banner}>
-        <IconButton icon="close" label="Close" onClick={() => go(ROUTES.signIn)} />
-        <MicrosoftLogo className={s.logo} />
-        <span className={s['banner-end']} aria-hidden="true" />
-      </div>
-
+    <>
       <IdentityBadge account={account} />
 
       <h1 className={s.title} id="loginHeader">
@@ -90,6 +81,6 @@ export function VerifyEmailPage() {
           Use your password
         </a>
       </div>
-    </FluentLayout>
+    </>
   );
 }

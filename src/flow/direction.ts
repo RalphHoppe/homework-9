@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import { STEP_ORDER, type RoutePath } from './routes';
+import { STEP_ORDER } from './steps';
+import type { RoutePath } from './routes';
 
 export type FlowDirection = 'next' | 'back' | null;
 

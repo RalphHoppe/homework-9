@@ -31,12 +31,15 @@ All four must be green. Do not commit a change that only passes three.
   no colour normalisation, no "cleaner" shorthand.
 - **Element ids come from the real pages** and are part of the contract (see
   `ARCHITECTURE.md`). Add them, keep them, do not rename them.
+- **The flow is one box.** A step renders only its own contents: the background, the box,
+  the logo (or the Fluent banner) and the footer belong to `layout/FlowShell` and are
+  never repeated inside a step. Which look a step gets is declared in `flow/steps.ts`.
 - Icons use the real Fluent path data (`src/components/brand/icons.tsx`). Do not
   hand-draw an approximation.
 - Tests live beside the code: `src/**/*.test.{ts,tsx}`, Vitest + jsdom. Query by role,
   label or text — CSS Module class names are hashed and must not be asserted on.
-- One page per file, one concern per component. If a page grows a reusable piece, that
-  piece moves to `src/components/`.
+- One step per file in `src/steps/`, one concern per component. If a step grows a
+  reusable piece, that piece moves to `src/components/`.
 
 ## Git
 

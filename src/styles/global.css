@@ -35,6 +35,9 @@
   --shadow4: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
   --shadow28: 0 0 8px rgba(0, 0, 0, 0.12), 0 14px 28px rgba(0, 0, 0, 0.14);
 
+  /* the curve the Fluent pages move on */
+  --curveDecelerateMax: cubic-bezier(0.1, 0.9, 0.2, 1);
+
   --fontFamilyBase:
     'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto,
     'Helvetica Neue', sans-serif;

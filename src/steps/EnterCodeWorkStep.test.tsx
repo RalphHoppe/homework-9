@@ -1,13 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderPage } from '@/test/renderPage';
-import { EnterCodeWorkPage } from './EnterCodeWorkPage';
+import { renderFlow } from '@/test/renderFlow';
 
-const renderCode = () =>
-  renderPage(<EnterCodeWorkPage />, '/work-enter-code?email=anton5%40abv.bg');
+const renderCode = () => renderFlow('/work-enter-code?email=anton5%40abv.bg');
 
-describe('EnterCodeWorkPage', () => {
+describe('EnterCodeWorkStep', () => {
   it('asks for the code the app shows', () => {
     renderCode();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Enter code');
